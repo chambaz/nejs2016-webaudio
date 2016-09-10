@@ -13,11 +13,11 @@ Open [http://localhost:8080](http://localhost:8080)
 
 - [Create Context](examples/create-context.html)
 - *Sources*
-	- [Oscillator](examples/sources/oscillator.html)
 	- [Media Element](examples/sources/media-element.html)
 	- [Media Stream](examples/sources/media-stream.html)
 	- [Audio Buffer](examples/sources/audio-buffer.html)
 	- [Audio Buffer Decode Audio](examples/sources/audio-buffer-decode-audio.html)
+	- [Oscillator](examples/sources/oscillator.html)
 - *Processing*
 	- [Gain](examples/processing/gain.html)
 	- [Delay](examples/processing/delay.html)

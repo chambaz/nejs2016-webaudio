@@ -20,7 +20,7 @@
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-			// query DOM nodes
+			// DOM nodes
 			const nodes = {
 				'status': document.querySelector('[data-status]'),
 				'play': document.querySelector('[data-play]'),
@@ -82,7 +82,7 @@
 				});
 			});
 
-			// delay slider change handler	
+			// delay slider change handler
 			nodes.slider.addEventListener('input', e => {
 				delay.delayTime.value = e.currentTarget.value;
 			});

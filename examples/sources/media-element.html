@@ -26,7 +26,7 @@
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-			// query DOM nodes used as audio source
+			// DOM nodes used as audio source
 			const sourceElements = {
 				audio: document.querySelector('[data-audio-source]'),
 				video: document.querySelector('[data-video-source]'),

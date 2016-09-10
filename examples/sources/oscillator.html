@@ -3,48 +3,134 @@
 		<title>NEJS 2016 - Oscillator</title>
 	</head>
 	<body>
-		<button data-start>Start Oscillator</button>
-		<button data-stop>Stop Oscillator</button>
+		<div>
+			<p><strong>Frequency</strong></p>
+			<input
+				data-frequency-slider
+				type="range"
+				min="100"
+				max="800"
+				step="1"
+				value="100" />
+		</div>
+
+		<div>
+			<p><strong>Sine Wave</strong></p>
+			<button data-sine-start>Start</button>
+			<button data-sine-stop>Stop</button>
+		</div>
+
+		<div>
+			<p><strong>Triangle Wave</strong></p>
+			<button data-triangle-start>Start</button>
+			<button data-triangle-stop>Stop</button>
+		</div>
+
+		<div>
+			<p><strong>Square Wave</strong></p>
+			<button data-square-start>Start</button>
+			<button data-square-stop>Stop</button>
+		</div>
 
 		<script>
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+			// DOM nodes
 			const nodes = {
-				start: document.querySelector('[data-start]'),
-				stop: document.querySelector('[data-stop]'),
+				frequencySlider: document.querySelector('[data-frequency-slider]'),
+				sine: {
+					start:document.querySelector('[data-sine-start]'),
+					stop: document.querySelector('[data-sine-stop]'),
+				},
+				triangle: {
+					start:document.querySelector('[data-triangle-start]'),
+					stop: document.querySelector('[data-triangle-stop]'),
+				},
+				square: {
+					start:document.querySelector('[data-square-start]'),
+					stop: document.querySelector('[data-square-stop]'),
+				},
 			};
 
-			let oscillator;
+			const oscillators = {};
 
-			// start button click handler
-			// start oscillator
-			nodes.start.addEventListener('click', e => {
-				if (oscillator) {
-					return;
-				}
-				
-				// create oscillator node
-				oscillator = audioCtx.createOscillator();
+			// create sine wave oscillator
+			// start and connect to output
+			nodes.sine.start.addEventListener('click', e => {
+				oscillators.sine = audioCtx.createOscillator();
+				oscillators.sine.type = 'sine'
+				// octave above slider value
+				oscillators.sine.frequency.value = nodes.frequencySlider.value * 2;
+				oscillators.sine.connect(audioCtx.destination);
+				oscillators.sine.start();
 
-				// set oscillator values
-				oscillator.type = 'sine';
-				oscillator.frequency.value = 440;
-
-				// connect oscillator to output
-				oscillator.connect(audioCtx.destination);
-				oscillator.start();
+				console.log(oscillators);
 			});
 
-			// stop button click handler
-			// stop oscillator
-			nodes.stop.addEventListener('click', e => {
-				oscillator.stop();
-				oscillator = false;
+			// stop sine wave
+			nodes.sine.stop.addEventListener('click', e => {
+				oscillators.sine.stop();
+				delete oscillators.sine;
+			});
+
+			// create triangle wave oscillator
+			// start and connect to output
+			nodes.triangle.start.addEventListener('click', e => {
+				oscillators.triangle = audioCtx.createOscillator();
+				oscillators.triangle.type = 'triangle'
+				oscillators.triangle.frequency.value = nodes.frequencySlider.value;
+				oscillators.triangle.connect(audioCtx.destination);
+				oscillators.triangle.start();
+
+				console.log(oscillators);
+			});
+
+			// stop triangle wave
+			nodes.triangle.stop.addEventListener('click', e => {
+				oscillators.triangle.stop();
+				delete oscillators.triangle;
+			});
+
+			// create square wave oscillator
+			// start and connect to output
+			nodes.square.start.addEventListener('click', e => {
+				oscillators.square = audioCtx.createOscillator();
+				oscillators.square.type = 'square'
+				// octavte below slider value
+				oscillators.square.frequency.value = nodes.frequencySlider.value / 2;
+				oscillators.square.connect(audioCtx.destination);
+				oscillators.square.start();
+
+				console.log(oscillators);
+			});
+
+			// stop square wave
+			nodes.square.stop.addEventListener('click', e => {
+				oscillators.square.stop();
+				delete oscillators.square;
+			});
+
+			// update oscillator frequencies with slider
+			nodes.frequencySlider.addEventListener('input', e => {
+				const val = e.currentTarget.value;
+
+				// octave above
+				if (oscillators.sine) {
+					oscillators.sine.frequency.value = val * 2;
+				}
+
+				if (oscillators.triangle) {
+					oscillators.triangle.frequency.value = val;
+				}
+
+				// octave below
+				if (oscillators.square) {
+					oscillators.square.frequency.value = val / 2;
+				}
 			});
 
 			console.log(audioCtx);
-			console.log(oscillator);
 		</script>
 	</body>
 </html>
