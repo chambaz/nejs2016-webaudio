@@ -1,6 +1,18 @@
 <html>
 	<head>
 		<title>NEJS 2016 - Analyzer</title>
+
+		<style>
+		pre {
+			margin: 20px 0;
+			padding: 20px;
+			font-size: 20px;
+			background: #ddd;
+			display: block;
+			width: 640px;
+			box-sizing: border-box;
+		}
+		</style>
 	</head>
 	<body>
 
@@ -9,6 +21,8 @@
 			controls
 			data-video-source>
 		</video>
+		<br />
+		<pre><code data-analysis></code></pre>
 
 		<script>
 			// create web audio context
@@ -17,29 +31,46 @@
 			// DOM nodes
 			const ui = {
 				video: document.querySelector('[data-video-source]'),
+				analysis: document.querySelector('[data-analysis]'),
 			};
 
 			// create media element source node
 			const videoSource = audioCtx.createMediaElementSource(ui.video);
 
+			// create analyzer node
 			const analyser = audioCtx.createAnalyser();
-			analyser.fftSize = 2048;
+			// set size of fast fourier transform
+			analyser.fftSize = 32;
 
+			// construct Uint8Array for analysis data
 			const bufferLength = analyser.frequencyBinCount;
 			const dataArray = new Uint8Array(bufferLength);
 
+			// connect video source to analyzer
+			// connect analyzer to output
 			videoSource.connect(analyser);
 			analyser.connect(audioCtx.destination);
 
+			// call analyze function at 60fps
 			function analyze() {
+				// analyze audio at this point in time
 				analyser.getByteTimeDomainData(dataArray);
-				console.log(dataArray);
+
+				// update analaysis in DOM, prettify JSON
+				ui.analysis.innerHTML = JSON.stringify(dataArray)
+											.replace(/{/, '{\r\n  ')
+											.replace(/,"/g, ',\r\n  "')
+											.replace(/}/, '\r\n}');
+
+				// recursivly call function every 60fps
 				requestAnimationFrame(analyze);
 			}
 
+			// kick off analysis
 			requestAnimationFrame(analyze);
 
 			console.log(audioCtx);
+			console.log(analyser);
 		</script>
 	</body>
 </html>
