@@ -19,3 +19,5 @@ Open [http://localhost:8080](http://localhost:8080)
 	- [Audio Buffer Decode Audio](examples/sources/audio-buffer-decode-audio.html)
 - *Processing*
 	- [Gain](examples/processing/gain.html)
+	- [Delay](examples/processing/delay.html)
+	- [Biquad Filter](examples/processing/biquad-filter.html)

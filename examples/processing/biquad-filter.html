@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<title>NEJS 2016 - Biquad Filter</title>
+	</head>
+	<body>
+
+		<input
+			data-gain-slider
+			type="range"
+			value="0"
+			min="0"
+			max=".8"
+			step=".01" />
+
+		<script>
+			// create web audio context
+			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+			// query slider DOM node
+			const gainSlider = document.querySelector('[data-gain-slider]');
+
+			// create oscillator node
+			const oscillator = audioCtx.createOscillator();
+
+			// create gain node
+			const gainNode = audioCtx.createGain();
+
+			// set oscillator values
+			oscillator.type = 'triangle';
+			oscillator.frequency.value = 220;
+
+			// set gain value
+			gainNode.gain.value = 0;
+
+			// connect oscillator to gain
+			// connect gain to output
+			oscillator.connect(gainNode);
+			gainNode.connect(audioCtx.destination);
+
+			// start oscillator
+			oscillator.start();
+
+			gainSlider.addEventListener('input', e => {
+				gainNode.gain.value = e.currentTarget.value;
+			});
+
+			console.log(audioCtx);
+			console.log(gain);
+		</script>
+	</body>
+</html>
