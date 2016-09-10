@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<title>NEJS 2016 - Oscillator Node</title>
+
+		<script>
+			// create web audio context
+			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+			// create oscillator node
+			var oscillator = audioCtx.createOscillator();
+
+			// set oscillator values
+			oscillator.type = 'sine';
+			oscillator.frequency.value = 440;
+
+			// connect oscillator to output
+			oscillator.connect(audioCtx.destination);
+
+			// start oscillator
+			oscillator.start();
+
+			console.log(audioCtx);
+			console.log(oscillator);
+		</script>
+	</head>
+	<body>
+		<p>Open the console</p>
+	</body>
+</html>
