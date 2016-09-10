@@ -30,7 +30,7 @@ Open [http://localhost:8080](http://localhost:8080)
 
 **Demos**
 
-- [Audio Visualization](examples/demos/audio-visualization.html)
 - [Game Design](examples/demos/game-design.html)
 - [UI Design](examples/demos/ui-design.html)
+- [Audio Visualization](examples/demos/audio-visualization.html)
 - [Interactive Music](examples/demos/interactive-music.html)
