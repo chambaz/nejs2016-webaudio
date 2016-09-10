@@ -4,9 +4,40 @@
 	</head>
 	<body>
 
+		<video
+			src="/assets/digitalsurgeons.mp4"
+			controls
+			data-video-source>
+		</video>
+
 		<script>
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+			// DOM nodes
+			const ui = {
+				video: document.querySelector('[data-video-source]'),
+			};
+
+			// create media element source node
+			const videoSource = audioCtx.createMediaElementSource(ui.video);
+
+			const analyser = audioCtx.createAnalyser();
+			analyser.fftSize = 2048;
+
+			const bufferLength = analyser.frequencyBinCount;
+			const dataArray = new Uint8Array(bufferLength);
+
+			videoSource.connect(analyser);
+			analyser.connect(audioCtx.destination);
+
+			function analyze() {
+				analyser.getByteTimeDomainData(dataArray);
+				console.log(dataArray);
+				requestAnimationFrame(analyze);
+			}
+
+			requestAnimationFrame(analyze);
 
 			console.log(audioCtx);
 		</script>
