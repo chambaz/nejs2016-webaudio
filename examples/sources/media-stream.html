@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<title>NEJS 2016 - Media Stream</title>
+	</head>
+	<body>
+
+		<script>
+			// create web audio context
+			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+			// query DOM nodes used as audio source
+			const sourceElements = {
+				audio: document.querySelector('[data-audio-source]'),
+				video: document.querySelector('[data-video-source]'),
+			};
+
+			// create media element source nodes
+			const sources = {
+				audio: audioCtx.createMediaElementSource(sourceElements.audio),
+				video: audioCtx.createMediaElementSource(sourceElements.video),
+			};
+
+			// connect source nodes to audio destination
+			sources.audio.connect(audioCtx.destination);
+			sources.video.connect(audioCtx.destination);
+
+			console.log(audioCtx);
+			console.log(sources);
+		</script>
+	</body>
+</html>
