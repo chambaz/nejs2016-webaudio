@@ -1,10 +1,25 @@
 <html>
 	<head>
 		<title>NEJS 2016 - Media Element</title>
+
+		<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+		}
+
+		.block {
+			text-align: center;
+			margin: 20px auto;
+		}
+		</style>
 	</head>
 	<body>
 
-		<div>
+		<div class="block">
 			<p><strong>Audio Media Element Source</strong></p>
 			<audio
 				src="/assets/digitalsurgeons.mp3"
@@ -13,7 +28,7 @@
 			</audio>
 		</div>
 
-		<div>
+		<div class="block">
 			<p><strong>Video Media Element Source</strong></p>
 			<video
 				src="/assets/digitalsurgeons.mp4"
