@@ -1,52 +1,139 @@
 <html>
 	<head>
 		<title>NEJS 2016 - Gain</title>
+
+		<style>
+		body {
+			display: flex;
+			height: 100%;
+			font-size: 30px;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+		}
+
+		.controls {
+			display: flex;
+			font-size: 20px;
+		}
+
+		.control {
+			text-align: center;
+		}
+
+		input[type="range"] {
+			font-size: 30px;
+		}
+		</style>
 	</head>
 	<body>
 
-		<input
-			data-gain-slider
-			type="range"
-			value="0"
-			min="0"
-			max=".8"
-			step=".01" />
+		<p><strong>Gain level</strong></p>
+
+		<div class="controls">
+			<div class="control">
+				<p><strong>Sine</strong></p>
+				<input
+					data-sine-gain-slider
+					type="range"
+					value="0"
+					min="0"
+					max=".8"
+					step=".01" />
+			</div>
+
+			<div class="control">
+				<p><strong>Triangle</strong></p>
+				<input
+					data-triangle-gain-slider
+					type="range"
+					value="0"
+					min="0"
+					max=".8"
+					step=".01" />
+			</div>
+
+			<div class="control">
+				<p><strong>Square</strong></p>
+				<input
+					data-square-gain-slider
+					type="range"
+					value="0"
+					min="0"
+					max=".8"
+					step=".01" />
+			</div>
+		</div>
 
 		<script>
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-			// gain slider DOM node
-			const gainSlider = document.querySelector('[data-gain-slider]');
+			// DOM nodes
+			const ui = {
+				sineGainSlider: document.querySelector('[data-sine-gain-slider]'),
+				triangleGainSlider: document.querySelector('[data-triangle-gain-slider]'),
+				squareGainSlider: document.querySelector('[data-square-gain-slider]'),
+			};
 
-			// create oscillator node
-			const oscillator = audioCtx.createOscillator();
+			// create gain nodes
+			const gains = {
+				sine: audioCtx.createGain(),
+				triangle: audioCtx.createGain(),
+				square: audioCtx.createGain(),
+			};
 
-			// create gain node
-			const gainNode = audioCtx.createGain();
+			// create oscillator nodes
+			const oscillators = {
+				sine: audioCtx.createOscillator(),
+				triangle: audioCtx.createOscillator(),
+				square: audioCtx.createOscillator(),
+			};
 
 			// set oscillator values
-			oscillator.type = 'triangle';
-			oscillator.frequency.value = 220;
+			oscillators.sine.type = 'sine';
+			oscillators.sine.frequency.value = 440;
+			oscillators.triangle.type = 'triangle';
+			oscillators.triangle.frequency.value = 660;
+			oscillators.square.type = 'square';
+			oscillators.square.frequency.value = 110;
 
-			// set gain value
-			gainNode.gain.value = 0;
+			// set gain values
+			gains.sine.gain.value = 0;
+			gains.triangle.gain.value = 0;
+			gains.square.gain.value = 0;
 
-			// connect oscillator to gain
-			// connect gain to output
-			oscillator.connect(gainNode);
-			gainNode.connect(audioCtx.destination);
+			// connect oscillators to gains
+			// connect gains to output
+			oscillators.sine.connect(gains.sine);
+			oscillators.triangle.connect(gains.triangle);
+			oscillators.square.connect(gains.square);
+			gains.sine.connect(audioCtx.destination);
+			gains.triangle.connect(audioCtx.destination);
+			gains.square.connect(audioCtx.destination);
 
-			// start oscillator
-			oscillator.start();
+			// start oscillators
+			oscillators.sine.start();
+			oscillators.triangle.start();
+			oscillators.square.start();
 
-			// update gain with slider
-			gainSlider.addEventListener('input', e => {
-				gainNode.gain.value = e.currentTarget.value;
+			// update sine gain with slider
+			ui.sineGainSlider.addEventListener('input', e => {
+				gains.sine.gain.value = e.currentTarget.value;
+			});
+
+			// update triangle gain with slider
+			ui.triangleGainSlider.addEventListener('input', e => {
+				gains.triangle.gain.value = e.currentTarget.value;
+			});
+
+			// update square gain with slider
+			ui.squareGainSlider.addEventListener('input', e => {
+				gains.square.gain.value = e.currentTarget.value;
 			});
 
 			console.log(audioCtx);
-			console.log(gain);
+			console.log(gains);
 		</script>
 	</body>
 </html>
