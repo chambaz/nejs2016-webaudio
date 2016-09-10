@@ -1,32 +1,58 @@
 <html>
 	<head>
 		<title>NEJS 2016 - Biquad Filter</title>
+
+		<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			font-size: 20px;
+		}
+
+		.block {
+			text-align: center;
+			margin: 20px auto;
+		}
+
+		input[type="range"] {
+			font-size: 30px;
+		}
+		</style>
 	</head>
 	<body>
 
-		<video
-			src="/assets/digitalsurgeons.mp4"
-			controls
-			data-video-source>
-		</video>
+		<div class="block">
+			<video
+				src="/assets/digitalsurgeons.mp4"
+				controls
+				data-video-source>
+			</video>
+		</div>
 
-		<p><strong>Filter Frequency</strong></p>
-		<input
-			data-frequency-slider
-			type="range"
-			value="1000"
-			min="1000"
-			max="10000"
-			step="1" />
+		<div class="block">
+			<p><strong>Filter Frequency</strong></p>
+			<input
+				data-frequency-slider
+				type="range"
+				value="1000"
+				min="1000"
+				max="10000"
+				step="1" />
+		</div>
 
-		<p><strong>Filter Q Value</strong></p>
-		<input
-			data-q-slider
-			type="range"
-			value="0"
-			min="0"
-			max="5"
-			step=".01" />
+		<div class="block">
+			<p><strong>Filter Q Value</strong></p>
+			<input
+				data-q-slider
+				type="range"
+				value="0"
+				min="0"
+				max="5"
+				step=".01" />
+		</div>
 
 		<script>
 			// create web audio context
