@@ -11,12 +11,66 @@
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+			// query DOM nodes
 			const nodes = {
 				'play': document.querySelector('[data-play]'),
 				'stop': document.querySelector('[data-stop]'),
 			};
 
+			const channels = 2;
+			const frameCount = audioCtx.sampleRate * 2.0;
+
+			// create 2 second stereo audio buffer
+			const buffer = audioCtx.createBuffer(
+				channels,
+				frameCount,
+				audioCtx.sampleRate
+			);
+
+			let bufferSource;
+
+			nodes.play.addEventListener('click', e => {
+				e.preventDefault();
+
+				if (bufferSource) {
+					return;
+				}
+
+				// Fill the buffer with white noise;
+				// just random values between -1.0 and 1.0
+				for (var channel = 0; channel < channels; channel++) {
+					// This gives us the actual array that contains the data
+					const buffering = buffer.getChannelData(channel);
+					for (var i = 0; i < frameCount; i++) {
+						// Math.random() is in [0; 1.0]
+						// audio needs to be in [-1.0; 1.0]
+						buffering[i] = Math.random() * 2 - 1;
+					}
+				}
+
+				// Get an AudioBufferSourceNode.
+				// This is the AudioNode to use when we want to play an AudioBuffer
+				bufferSource = audioCtx.createBufferSource();
+
+				// set the buffer in the AudioBufferSourceNode
+				bufferSource.buffer = buffer;
+
+				// connect the AudioBufferSourceNode to the
+				// destination so we can hear the sound
+				bufferSource.connect(audioCtx.destination);
+
+				// start the source playing
+				bufferSource.start(0);
+			});
+
+			nodes.stop.addEventListener('click', e => {
+				e.preventDefault();
+				bufferSource.stop(0);
+				bufferSource = false;
+			});
+
 			console.log(audioCtx);
+			console.log(buffer);
 		</script>
 	</body>
 </html>
