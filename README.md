@@ -28,7 +28,7 @@ Open [http://localhost:8080](http://localhost:8080)
 	- [Analyzer](examples/specialized/analyzer.html)
 	- [Spatialization](examples/specialized/spatialization.html)
 
-**Use Cases**
+**Demos**
 
-- [Audio Visualization](examples/usecases/audio-visualization.html)
-- [Game Design](examples/usecases/game-design.html)
+- [Audio Visualization](examples/demos/audio-visualization.html)
+- [Game Design](examples/demos/game-design.html)
