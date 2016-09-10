@@ -1,23 +1,47 @@
 <html>
 	<head>
 		<title>NEJS 2016 - Wave Shaper</title>
+
+		<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			font-size: 20px;
+		}
+
+		.block {
+			text-align: center;
+			margin: 20px auto;
+		}
+
+		input[type="range"] {
+			font-size: 30px;
+		}
+		</style>
 	</head>
 	<body>
 
-		<audio
-			src="/assets/digitalsurgeons.mp3"
-			controls
-			data-audio-source>
-		</audio>
+		<div class="block">
+			<audio
+				src="/assets/digitalsurgeons.mp3"
+				controls
+				data-audio-source>
+			</audio>
+		</div>
 
-		<p><strong>Distortion Intensity</strong></p>
-		<input
-			data-distortion-slider
-			type="range"
-			value="0"
-			min="0"
-			max="300"
-			step=".05" />
+		<div class="block">
+			<p><strong>Distortion Intensity</strong></p>
+			<input
+				data-distortion-slider
+				type="range"
+				value="0"
+				min="0"
+				max="300"
+				step=".05" />
+		</div>
 
 		<script>
 			// create web audio context
