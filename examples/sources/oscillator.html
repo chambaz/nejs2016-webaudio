@@ -3,24 +3,45 @@
 		<title>NEJS 2016 - Oscillator</title>
 	</head>
 	<body>
-		<p>Open the console</p>
+		<button data-start>Start Oscillator</button>
+		<button data-stop>Stop Oscillator</button>
 
 		<script>
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-			// create oscillator node
-			const oscillator = audioCtx.createOscillator();
+			const nodes = {
+				start: document.querySelector('[data-start]'),
+				stop: document.querySelector('[data-stop]'),
+			};
 
-			// set oscillator values
-			oscillator.type = 'sine';
-			oscillator.frequency.value = 440;
+			let oscillator;
 
-			// connect oscillator to output
-			oscillator.connect(audioCtx.destination);
-
+			// start button click handler
 			// start oscillator
-			oscillator.start();
+			nodes.start.addEventListener('click', e => {
+				if (oscillator) {
+					return;
+				}
+				
+				// create oscillator node
+				oscillator = audioCtx.createOscillator();
+
+				// set oscillator values
+				oscillator.type = 'sine';
+				oscillator.frequency.value = 440;
+
+				// connect oscillator to output
+				oscillator.connect(audioCtx.destination);
+				oscillator.start();
+			});
+
+			// stop button click handler
+			// stop oscillator
+			nodes.stop.addEventListener('click', e => {
+				oscillator.stop();
+				oscillator = false;
+			});
 
 			console.log(audioCtx);
 			console.log(oscillator);
