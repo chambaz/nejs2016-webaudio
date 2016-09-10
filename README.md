@@ -11,8 +11,9 @@ Open [http://localhost:8080](http://localhost:8080)
 
 **Examples**
 
-- [Create Context](create-context.html)
-- [Oscillator](oscillator.html)
-- [Media Element](media-element.html)
-- [Audio Buffer](audio-buffer.html)
-- [Audio Buffer Decode Audio](audio-buffer-decode-audio.html)
+- [Create Context](examples/create-context.html)
+- *Sources*
+	- [Oscillator](examples/sources/oscillator.html)
+	- [Media Element](examples/sources/media-element.html)
+	- [Audio Buffer](examples/sources/audio-buffer.html)
+	- [Audio Buffer Decode Audio](examples/sources/audio-buffer-decode-audio.html)
