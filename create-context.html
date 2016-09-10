@@ -1,0 +1,14 @@
+<html>
+	<head>
+		<title>NEJS 2016 - Create Context</title>
+
+		<script>
+			// create web audio context
+			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+			console.log(audioCtx);
+		</script>
+	</head>
+	<body>
+		<p>Open the console</p>
+	</body>
+</html>
