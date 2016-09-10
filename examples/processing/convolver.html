@@ -1,24 +1,48 @@
 <html>
 	<head>
 		<title>NEJS 2016 - Convolver</title>
+
+		<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			font-size: 20px;
+		}
+
+		.block {
+			text-align: center;
+			margin: 20px auto;
+		}
+
+		input[type="range"] {
+			font-size: 30px;
+		}
+		</style>
 	</head>
 	<body>
 
-		<audio
-			src="/assets/nejs.ogg"
-			controls
-			loop
-			data-audio-source>
-		</audio>
+		<div class="block">
+			<audio
+				src="/assets/nejs.ogg"
+				controls
+				loop
+				data-audio-source>
+			</audio>
+		</div>
 
-		<p><strong>Reverb mix</strong></p>
-		<input
-			data-reverb-slider
-			type="range"
-			value="0"
-			min="0"
-			max="1"
-			step=".05" />
+		<div class="block">
+			<p><strong>Reverb mix</strong></p>
+			<input
+				data-reverb-slider
+				type="range"
+				value="0"
+				min="0"
+				max="1"
+				step=".05" />
+		</div>
 
 		<script>
 			// create web audio context
