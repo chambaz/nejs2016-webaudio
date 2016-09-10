@@ -4,9 +4,14 @@
 	</head>
 	<body>
 
+		<button data-play>Play Audio</button>
+
 		<script>
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+			const playBtn = document.querySelector('[data-play]');
+
+			let bufferSource, buffer;
 
 			fetch('assets/digitalsurgeons.mp3')
 			.then(response => {
@@ -16,14 +21,20 @@
 				console.log(arrayBuffer);
 				audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
 					console.log('hi!1');
-					const bufferSource = decodedAudio;
-					const buffer = audioCtx.createBufferSource();
+					bufferSource = decodedAudio;
+					buffer = audioCtx.createBufferSource();
 
 					buffer.buffer = bufferSource;
 					buffer.connect(audioCtx.destination);
-					buffer.start(0);
+
+					playBtn.addEventListener('click', toggleAudio);
 				});
 			});
+
+			function toggleAudio(e) {
+				e.preventDefault();
+				buffer.start(0);
+			}
 
 			console.log(audioCtx);
 		</script>
