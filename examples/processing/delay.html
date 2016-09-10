@@ -1,13 +1,35 @@
 <html>
 	<head>
 		<title>NEJS 2016 - Delay</title>
+
+		<style>
+		body {
+			display: flex;
+			height: 100%;
+			font-size: 30px;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+		}
+
+		.buttons {
+			display: flex;
+			margin-top: 20px;
+		}
+
+		button {
+			font-size: 20px;
+			margin: 0 10px;
+		}
+
+		input[type="range"] {
+			font-size: 30px;
+		}
+		</style>
 	</head>
 	<body>
 
 		<p data-status>Decoding audio...</p>
-		<button data-play>Play</button>
-		<button data-stop>Stop</button>
-		<br />
 		<input
 			data-delay-slider
 			type="range"
@@ -15,6 +37,11 @@
 			min="0"
 			max="1"
 			step=".01" />
+
+		<div class="buttons">
+			<button data-play>Play</button>
+			<button data-stop>Stop</button>
+		</div>
 
 		<script>
 			// create web audio context
