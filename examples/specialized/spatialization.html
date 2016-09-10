@@ -17,27 +17,33 @@
 	</head>
 	<body>
 
+		<p data-status>Decoding audio...</p>
+		<div class="buttons">
+			<button data-play>Play</button>
+			<button data-stop>Stop</button>
+		</div>
 		<div class="controls">
 			<div class="control">
 				<p><strong>Panner X</strong></p>
 				<input
 					data-panner-x
-					type="range" />
-			</div>
-
-			<div class="control">
-				<p><strong>Panner Y</strong></p>
-				<input
-					data-panner-y
-					orient="vertical"
-					type="range" />
+					type="range"
+					min="-49"
+					max="51"
+					step=".05"
+					value="50" />
 			</div>
 
 			<div class="control">
 				<p><strong>Panner Z</strong></p>
 				<input
 					data-panner-z
-					type="range" />
+					orient="vertical"
+					type="range"
+					min="0"
+					max="1"
+					step=".1"
+					value="0" />
 			</div>
 		</div>
 
@@ -45,37 +51,92 @@
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-			// gain slider DOM node
-			const gainSlider = document.querySelector('[data-gain-slider]');
+			const ui = {
+				status: document.querySelector('[data-status]'),
+				play: document.querySelector('[data-play]'),
+				stop: document.querySelector('[data-stop]'),
+				pannerX: document.querySelector('[data-panner-x]'),
+				pannerZ: document.querySelector('[data-panner-z]'),
+			};
 
-			// create oscillator node
-			const oscillator = audioCtx.createOscillator();
+			const panner = audioCtx.createPanner();
+			panner.coneOuterGain = 0.1;
+			panner.coneOuterAngle = 180;
+			panner.coneInnerAngle = 0;
 
-			// create gain node
-			const gainNode = audioCtx.createGain();
+			const dimensions = {
+				width: window.innerWidth,
+				height: window.innerHeight,
+				xPos: 0,
+				yPos: 0,
+				zPos: 0,
+			};
 
-			// set oscillator values
-			oscillator.type = 'triangle';
-			oscillator.frequency.value = 220;
+			panner.setPosition(dimensions.xPos, dimensions.yPos, dimensions.zPos);
+			audioCtx.listener.setPosition(0, 0, 0);
 
-			// set gain value
-			gainNode.gain.value = 0;
+			let bufferSource, buffer;
 
-			// connect oscillator to gain
-			// connect gain to output
-			oscillator.connect(gainNode);
-			gainNode.connect(audioCtx.destination);
+			// fetch mp3
+			fetch('/assets/digitalsurgeons.mp3')
 
-			// start oscillator
-			oscillator.start();
+			// fetch as array buffer
+			.then(response => {
+				return response.arrayBuffer();
+			})
+			.then(arrayBuffer => {
+				// decode audio data from array buffer
+				audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
+					console.log(decodedAudio);
 
-			// update gain with slider
-			gainSlider.addEventListener('input', e => {
-				gainNode.gain.value = e.currentTarget.value;
+					buffer = decodedAudio;
+					ui.status.innerHTML = 'Audio decoded.';
+
+					// create buffer, start and connect to output
+					ui.play.addEventListener('click', e => {
+						e.preventDefault();
+
+						// buffer already started
+						if (bufferSource) {
+							false;
+						}
+
+						// create new buffer, connect to output and play
+						bufferSource = audioCtx.createBufferSource();
+						bufferSource.buffer = buffer;
+						bufferSource.connect(panner);
+						panner.connect(audioCtx.destination);
+						// bufferSource.connect(audioCtx.destination);
+						bufferSource.start(0);
+					});
+
+					// stop buffer
+					ui.stop.addEventListener('click', e => {
+						e.preventDefault();
+						bufferSource.stop(0);
+						bufferSource = false;
+					});
+				});
 			});
 
+			// update panner X with slider
+			ui.pannerX.addEventListener('input', e => {
+				dimensions.xPos = e.currentTarget.value;
+				panner.setPosition(dimensions.xPos, dimensions.yPos, dimensions.zPos);
+			});
+
+			// update panner Z with slider
+			ui.pannerZ.addEventListener('input', e => {
+				dimensions.zPos = e.currentTarget.value;
+				panner.setPosition(dimensions.xPos, dimensions.yPos, dimensions.zPos);
+			});
+
+			function positionPanner() {
+				panner.setPosition(dimensions.xPos, dimensions.yPos, dimensions.zPos);
+				panner.setVelocity(dimensions.xVel, 0, dimensions.zVel);
+			}
+
 			console.log(audioCtx);
-			console.log(gain);
 		</script>
 	</body>
 </html>
