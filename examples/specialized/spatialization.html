@@ -1,0 +1,80 @@
+<html>
+	<head>
+		<title>NEJS 2016 - Spatialization</title>
+
+		<style>
+		.controls {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.control {
+			text-align: center;
+		}
+		</style>
+	</head>
+	<body>
+
+		<div class="controls">
+			<div class="control">
+				<p><strong>Panner X</strong></p>
+				<input
+					data-panner-x
+					type="range" />
+			</div>
+
+			<div class="control">
+				<p><strong>Panner Y</strong></p>
+				<input
+					data-panner-y
+					orient="vertical"
+					type="range" />
+			</div>
+
+			<div class="control">
+				<p><strong>Panner Z</strong></p>
+				<input
+					data-panner-z
+					type="range" />
+			</div>
+		</div>
+
+		<script>
+			// create web audio context
+			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+			// gain slider DOM node
+			const gainSlider = document.querySelector('[data-gain-slider]');
+
+			// create oscillator node
+			const oscillator = audioCtx.createOscillator();
+
+			// create gain node
+			const gainNode = audioCtx.createGain();
+
+			// set oscillator values
+			oscillator.type = 'triangle';
+			oscillator.frequency.value = 220;
+
+			// set gain value
+			gainNode.gain.value = 0;
+
+			// connect oscillator to gain
+			// connect gain to output
+			oscillator.connect(gainNode);
+			gainNode.connect(audioCtx.destination);
+
+			// start oscillator
+			oscillator.start();
+
+			// update gain with slider
+			gainSlider.addEventListener('input', e => {
+				gainNode.gain.value = e.currentTarget.value;
+			});
+
+			console.log(audioCtx);
+			console.log(gain);
+		</script>
+	</body>
+</html>
