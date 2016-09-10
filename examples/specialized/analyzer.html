@@ -3,10 +3,17 @@
 		<title>NEJS 2016 - Analyzer</title>
 
 		<style>
+		body {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+		}
+
 		pre {
-			margin: 20px 0;
+			margin: 20px 0 20px 20px;
 			padding: 20px;
-			font-size: 20px;
+			font-size: 17px;
 			background: #ddd;
 			display: block;
 			width: 640px;
@@ -16,13 +23,14 @@
 	</head>
 	<body>
 
-		<video
-			src="/assets/digitalsurgeons.mp4"
-			controls
-			data-video-source>
-		</video>
-		<br />
-		<pre><code data-analysis></code></pre>
+		<div>
+			<video
+				src="/assets/digitalsurgeons.mp4"
+				controls
+				data-video-source>
+			</video>
+		</div>
+		<div><pre><code data-analysis></code></pre></div>
 
 		<script>
 			// create web audio context
