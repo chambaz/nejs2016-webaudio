@@ -4,31 +4,34 @@
 
 		<style>
 		body {
-			height: 100%;
-			width: 100%;
-			margin: 0;
 			background: #777;
+			height: 100%;
+			margin: 0;
+			overflow: hidden;
+			padding: 0;
+			width: 100%;
 		}
 
 		.character {
-			width: 50px;
-			height: 50px;
 			background: white;
+			height: 50px;
+			left: 0;
 			position: absolute;
 			top: 0;
-			left: 0;
-			z-index: 1;
 			transition: .3s;
+			width: 50px;
+			z-index: 2;
 		}
 
 		.target {
-			width: 50px;
-			height: 50px;
 			background: black;
+			height: 50px;
 			position: absolute;
-			bottom: 0;
 			right: 0;
-			z-index: 2;
+			top: 50%;
+			transform: translateY(-50px);
+			width: 50px;
+			z-index: 1;
 		}
 		</style>
 	</head>
@@ -47,20 +50,29 @@
 				target: document.querySelector('[data-target]'),
 			};
 
-			const targetPosition = {
-				top: Number(ui.character.style.top.replace(/px/, '')),
-				left: window.innerWidth - 50,
+			// store window dimensions
+			const dimensions = {
+				width: window.innerWidth,
+				height: window.innerHeight,
 			};
 
-			const notes = [
-				[261.63, 523.26, 1046.52],
-				[293.66, 587.32, 1174.64],
-				[311.13, 622.26, 1244.52],
-				[392, 784, 1568],
-			];
+			// target position
+			const targetPosition = {
+				left: dimensions.width - 50,
+				top: (dimensions.height / 2) - 25,
+			};
 
+			// create gain node
 			const gainNode = audioCtx.createGain();
 			gainNode.gain.value = .8;
+
+			// create biquad filter node
+			const biquadFilter = audioCtx.createBiquadFilter();
+
+			// set biquad filter values
+			biquadFilter.type = "lowpass";
+			biquadFilter.frequency.value = 0;
+			biquadFilter.Q.value = 10;
 
 			// create oscillators
 			const oscillators = {
@@ -69,44 +81,67 @@
 				high: audioCtx.createOscillator(),
 			};
 
-			let currentNote = 0;
-			let speed = window.innerWidth;
+			// arpeggio notes
+			const arpeggio = {
+				notes: [
+					[261.63, 523.26, 1046.52],
+					[293.66, 587.32, 1174.64],
+					[311.13, 622.26, 1244.52],
+					[392, 784, 1568],
+				],
+				currentNote: 0,
+				maxFilter: 1200,
+				speed: window.innerWidth,
+			};
 
+			// oscillator initial settings
 			oscillators.low.type = 'sine';
-			oscillators.low.frequency.value = notes[0][0];
-
+			oscillators.low.frequency.value = arpeggio.notes[0][0];
 			oscillators.mid.type = 'sine';
-			oscillators.mid.frequency.value = notes[0][1];
-
+			oscillators.mid.frequency.value = arpeggio.notes[0][1];
 			oscillators.high.type = 'sine';
-			oscillators.high.frequency.value = notes[0][2];
+			oscillators.high.frequency.value = arpeggio.notes[0][2];
 
+			// connect oscillators to gain
+			// connect gain to biquad filter
+			// connect filter to output
 			oscillators.low.connect(gainNode);
 			oscillators.mid.connect(gainNode);
 			oscillators.high.connect(gainNode);
-			gainNode.connect(audioCtx.destination);
+			gainNode.connect(biquadFilter);
+			biquadFilter.connect(audioCtx.destination);
 
+			// start the oscillators
 			oscillators.low.start(0);
 			oscillators.mid.start(0);
 			oscillators.high.start(0);
 
-			function note() {
-				oscillators.low.frequency.value = notes[currentNote][0];
-				oscillators.mid.frequency.value = notes[currentNote][1];
-				oscillators.high.frequency.value = notes[currentNote][2];
-
-				if (currentNote >= notes.length - 1) {
-					currentNote = 0;
-				} else {
-					currentNote++;
-				}
-
-				setTimeout(note, speed);
+			// map a value from one range to anoter
+			// e.g. 5 out of 10 expressed as a value between 20 - 40 = 30
+			function rangeMap(val, inRange, outRange) {
+				return (val - inRange.min) * (outRange.max - outRange.min) / (inRange.max - inRange.min) + outRange.min;
 			}
 
-			note();
+			// play next note in arpeggio and recursively call the following
+			function arpeggioNote() {
+				oscillators.low.frequency.value = arpeggio.notes[arpeggio.currentNote][0];
+				oscillators.mid.frequency.value = arpeggio.notes[arpeggio.currentNote][1];
+				oscillators.high.frequency.value = arpeggio.notes[arpeggio.currentNote][2];
 
-			// move baddy on key down
+				// start arpeggio again at the end
+				if (arpeggio.currentNote >= arpeggio.notes.length - 1) {
+					arpeggio.currentNote = 0;
+				} else {
+					arpeggio.currentNote++;
+				}
+
+				setTimeout(arpeggioNote, arpeggio.speed);
+			}
+
+			// kick the arpeggio off
+			arpeggioNote();
+
+			// move character on key down
 			document.addEventListener('keydown', e => {
 
 				// calculate current position
@@ -115,31 +150,74 @@
 					left: Number(ui.character.style.left.replace(/px/, '')),
 				};
 
+				// move character based on arrow keys
 				switch(e.keyCode) {
 					// left
 					case 37:
-						ui.character.style.left = `${coords.left - 20}px`;
+					 	if (coords.left >= 0) {
+							ui.character.style.left = `${coords.left - 20}px`;
+						}
 					break;
 
 					// up
 					case 38:
-						ui.character.style.top = `${coords.top - 20}px`;
+						if (coords.top >= 0) {
+							ui.character.style.top = `${coords.top - 20}px`;
+						}
 					break;
 
 					// right
 					case 39:
-						ui.character.style.left = `${coords.left + 20}px`;
+						if (coords.left <= targetPosition.left) {
+							ui.character.style.left = `${coords.left + 20}px`;
+						}
 					break;
 
 					// down
 					case 40:
-						ui.character.style.top = `${coords.top + 20}px`;
+						if (coords.top <= dimensions.height) {
+							ui.character.style.top = `${coords.top + 20}px`;
+						}
 					break;
 				}
 
-				console.log(targetPosition.left, coords.left);
+				// update arpeggio speed
+				arpeggio.speed = targetPosition.left - coords.left;
 
-				speed = targetPosition.left - coords.left;
+				let mappedvalue;
+
+				// set filter value for top half of screen
+				// based on distance from target
+				if (coords.top < targetPosition.top) {
+					mappedvalue = rangeMap(
+						coords.top,
+						{
+							min: 0,
+							max: targetPosition.top,
+						},
+						{
+							min: 0,
+							max: arpeggio.maxFilter,
+						}
+					);
+
+				// set filter value for bottom half of screen
+				// based on distance from target
+				} else {
+					mappedvalue = rangeMap(
+						coords.top,
+						{
+							min: targetPosition.top,
+							max: dimensions.height,
+						},
+						{
+							min: arpeggio.maxFilter,
+							max: 0,
+						}
+					);
+				}
+
+				biquadFilter.frequency.value = mappedvalue;
 			});
 
 		</script>
