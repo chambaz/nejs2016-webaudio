@@ -8,6 +8,23 @@
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+			fetch('assets/digitalsurgeons.mp3')
+			.then(response => {
+				return response.arrayBuffer();
+			})
+			.then(arrayBuffer => {
+				console.log(arrayBuffer);
+				audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
+					console.log('hi!1');
+					const bufferSource = decodedAudio;
+					const buffer = audioCtx.createBufferSource();
+
+					buffer.buffer = bufferSource;
+					buffer.connect(audioCtx.destination);
+					buffer.start(0);
+				});
+			});
+
 			console.log(audioCtx);
 		</script>
 	</body>
