@@ -3,13 +3,24 @@
 		<title>NEJS 2016 - Oscillator Node</title>
 	</head>
 	<body>
-		<p>Open the console</p>
 
-		<audio
-			src="assets/digitalsurgeons.mp3"
-			controls
-			data-audio-source>
-		</audio>
+		<div>
+			<p><strong>Audio Media Element Source</strong></p>
+			<audio
+				src="assets/digitalsurgeons.mp3"
+				controls
+				data-audio-source>
+			</audio>
+		</div>
+
+		<div>
+			<p><strong>Video Media Element Source</strong></p>
+			<video
+				src="assets/digitalsurgeons.mp4"
+				controls
+				data-video-source>
+			</video>
+		</div>
 
 		<script>
 			// create web audio context
@@ -18,16 +29,20 @@
 			// query DOM nodes used as audio source
 			const sourceElements = {
 				audio: document.querySelector('[data-audio-source]'),
+				video: document.querySelector('[data-video-source]'),
 			};
 
 			// create media element source nodes
 			const sources = {
 				audio: audioCtx.createMediaElementSource(sourceElements.audio),
+				video: audioCtx.createMediaElementSource(sourceElements.video),
 			};
 
 			// connect source nodes to audio destination
 			sources.audio.connect(audioCtx.destination);
+			sources.video.connect(audioCtx.destination);
 
+			console.log(audioCtx);
 			console.log(sources);
 		</script>
 	</body>
