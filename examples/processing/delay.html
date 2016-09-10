@@ -1,12 +1,20 @@
 <html>
 	<head>
-		<title>NEJS 2016 - Audio Buffer Decode Audio</title>
+		<title>NEJS 2016 - Delay</title>
 	</head>
 	<body>
 
 		<p data-status>Decoding audio...</p>
 		<button data-play>Play</button>
 		<button data-stop>Stop</button>
+		<br />
+		<input
+			data-delay-slider
+			type="range"
+			value="0"
+			min="0"
+			max="1"
+			step=".01" />
 
 		<script>
 			// create web audio context
@@ -17,7 +25,15 @@
 				'status': document.querySelector('[data-status]'),
 				'play': document.querySelector('[data-play]'),
 				'stop': document.querySelector('[data-stop]'),
+				'slider': document.querySelector('[data-delay-slider]'),
 			};
+
+			// create delay node
+			const delay = audioCtx.createDelay(5.0);
+
+			// create gain node for delay
+			const gainNode = audioCtx.createGain();
+			gainNode.gain.value = .7;
 
 			let bufferSource, buffer;
 
@@ -48,7 +64,12 @@
 						// create new buffer, connect to output and play
 						buffer = audioCtx.createBufferSource();
 						buffer.buffer = bufferSource;
+
 						buffer.connect(audioCtx.destination);
+						buffer.connect(delay);
+						delay.connect(gainNode)
+						gainNode.connect(audioCtx.destination);
+
 						buffer.start(0);
 					});
 
@@ -61,7 +82,12 @@
 				});
 			});
 
+			nodes.slider.addEventListener('input', e => {
+				delay.delayTime.value = e.currentTarget.value;
+			});
+
 			console.log(audioCtx);
+			console.log(delay);
 		</script>
 	</body>
 </html>
