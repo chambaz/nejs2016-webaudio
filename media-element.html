@@ -7,6 +7,7 @@
 
 		<audio
 			src="assets/digitalsurgeons.mp3"
+			controls
 			data-audio-source>
 		</audio>
 
@@ -14,9 +15,18 @@
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-			const sources = {
+			// query DOM nodes used as audio source
+			const sourceElements = {
 				audio: document.querySelector('[data-audio-source]'),
 			};
+
+			// create media element source nodes
+			const sources = {
+				audio: audioCtx.createMediaElementSource(sourceElements.audio),
+			};
+
+			// connect source nodes to audio destination
+			sources.audio.connect(audioCtx.destination);
 
 			console.log(sources);
 		</script>
