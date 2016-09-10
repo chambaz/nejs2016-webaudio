@@ -4,12 +4,17 @@
 	</head>
 	<body>
 
-		<button data-play>Play Audio</button>
+		<button data-play>Play</button>
+		<button data-stop>Stop</button>
 
 		<script>
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-			const playBtn = document.querySelector('[data-play]');
+
+			const nodes = {
+				'play': document.querySelector('[data-play]'),
+				'stop': document.querySelector('[data-stop]'),
+			};
 
 			let bufferSource, buffer;
 
@@ -18,23 +23,29 @@
 				return response.arrayBuffer();
 			})
 			.then(arrayBuffer => {
-				console.log(arrayBuffer);
 				audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
-					console.log('hi!1');
 					bufferSource = decodedAudio;
-					buffer = audioCtx.createBufferSource();
 
-					buffer.buffer = bufferSource;
-					buffer.connect(audioCtx.destination);
+					nodes.play.addEventListener('click', e => {
+						e.preventDefault();
 
-					playBtn.addEventListener('click', toggleAudio);
+						if (buffer) {
+							false;
+						}
+
+						buffer = audioCtx.createBufferSource();
+						buffer.buffer = bufferSource;
+						buffer.connect(audioCtx.destination);
+						buffer.start(0);
+					});
+
+					nodes.stop.addEventListener('click', e => {
+						e.preventDefault();
+						buffer.stop(0);
+						buffer = false;
+					});
 				});
 			});
-
-			function toggleAudio(e) {
-				e.preventDefault();
-				buffer.start(0);
-			}
 
 			console.log(audioCtx);
 		</script>
