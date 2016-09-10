@@ -33,7 +33,7 @@
 				audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
 					console.log(decodedAudio);
 
-					bufferSource = decodedAudio;
+					buffer = decodedAudio;
 					nodes.status.innerHTML = 'Audio decoded.';
 
 					// play button click handler
@@ -41,22 +41,22 @@
 						e.preventDefault();
 
 						// buffer already started
-						if (buffer) {
+						if (bufferSource) {
 							false;
 						}
 
 						// create new buffer, connect to output and play
-						buffer = audioCtx.createBufferSource();
-						buffer.buffer = bufferSource;
-						buffer.connect(audioCtx.destination);
-						buffer.start(0);
+						bufferSource = audioCtx.createBufferSource();
+						bufferSource.buffer = buffer;
+						bufferSource.connect(audioCtx.destination);
+						bufferSource.start(0);
 					});
 
 					// stop button click handler
 					nodes.stop.addEventListener('click', e => {
 						e.preventDefault();
-						buffer.stop(0);
-						buffer = false;
+						bufferSource.stop(0);
+						bufferSource = false;
 					});
 				});
 			});
