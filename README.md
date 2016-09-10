@@ -12,5 +12,7 @@ Open [http://localhost:8080](http://localhost:8080)
 **Examples**
 
 - [Create Context](create-context.html)
-- [Oscillator Node](oscillator.html)
-- [Media Element Node](media-element.html)
+- [Oscillator](oscillator.html)
+- [Media Element](media-element.html)
+- [Audio Buffer](audio-buffer.html)
+- [Audio Buffer Decode Audio](audio-buffer-decode-audio.html)

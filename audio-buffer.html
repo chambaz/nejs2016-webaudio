@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title>NEJS 2016 - Audio Buffer Decode Audio</title>
+	</head>
+	<body>
+
+		<button data-play>Play</button>
+		<button data-stop>Stop</button>
+
+		<script>
+			// create web audio context
+			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+			const nodes = {
+				'play': document.querySelector('[data-play]'),
+				'stop': document.querySelector('[data-stop]'),
+			};
+
+			console.log(audioCtx);
+		</script>
+	</body>
+</html>
