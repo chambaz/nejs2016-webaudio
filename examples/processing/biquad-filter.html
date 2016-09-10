@@ -4,48 +4,69 @@
 	</head>
 	<body>
 
+		<video
+			src="/assets/digitalsurgeons.mp4"
+			controls
+			data-video-source>
+		</video>
+
+		<p><strong>Filter Frequency</strong></p>
 		<input
-			data-gain-slider
+			data-frequency-slider
+			type="range"
+			value="1000"
+			min="1000"
+			max="10000"
+			step="1" />
+
+		<p><strong>Filter Q Value</strong></p>
+		<input
+			data-q-slider
 			type="range"
 			value="0"
 			min="0"
-			max=".8"
+			max="5"
 			step=".01" />
 
 		<script>
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-			// query slider DOM node
-			const gainSlider = document.querySelector('[data-gain-slider]');
+			// query DOM nodes
+			const nodes = {
+				video: document.querySelector('[data-video-source]'),
+				frequencySlider: document.querySelector('[data-frequency-slider]'),
+				qSlider: document.querySelector('[data-q-slider]'),
+			};
 
-			// create oscillator node
-			const oscillator = audioCtx.createOscillator();
+			// create media element source node
+			const videoSource = audioCtx.createMediaElementSource(nodes.video);
 
-			// create gain node
-			const gainNode = audioCtx.createGain();
+			// create biquad filter node
+			const biquadFilter = audioCtx.createBiquadFilter();
 
-			// set oscillator values
-			oscillator.type = 'triangle';
-			oscillator.frequency.value = 220;
+			// set biquad filter values
+			biquadFilter.type = "bandpass";
+			biquadFilter.frequency.value = 100;
+			biquadFilter.Q.value = 0;
 
-			// set gain value
-			gainNode.gain.value = 0;
+			// connect video source to biquad filter
+			// connect biquad filter to output
+			videoSource.connect(biquadFilter);
+			biquadFilter.connect(audioCtx.destination);
 
-			// connect oscillator to gain
-			// connect gain to output
-			oscillator.connect(gainNode);
-			gainNode.connect(audioCtx.destination);
+			// frequency slider change handler
+			nodes.frequencySlider.addEventListener('input', e => {
+				biquadFilter.frequency.value = e.currentTarget.value;
+			});
 
-			// start oscillator
-			oscillator.start();
-
-			gainSlider.addEventListener('input', e => {
-				gainNode.gain.value = e.currentTarget.value;
+			// q slider change handler
+			nodes.qSlider.addEventListener('input', e => {
+				biquadFilter.Q.value = e.currentTarget.value;
 			});
 
 			console.log(audioCtx);
-			console.log(gain);
+			console.log(biquadFilter);
 		</script>
 	</body>
 </html>

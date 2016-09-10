@@ -40,6 +40,7 @@
 			// start oscillator
 			oscillator.start();
 
+			// gain slider change handler	
 			gainSlider.addEventListener('input', e => {
 				gainNode.gain.value = e.currentTarget.value;
 			});
