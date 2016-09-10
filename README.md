@@ -1,4 +1,4 @@
-# 🤘 Web Audio - NEJS 2016 🤘
+# 🤘 NEJS 2016 - WebAudio 🤘
 
 A collection of WebAudio examples for NEJS 2016
 

@@ -1,5 +1,5 @@
 {
-  "name": "nejs2016",
+  "name": "nejs2016-webaudio",
   "version": "0.0.0",
   "description": "A collection of WebAudio examples for NEJS 2016",
   "main": "index.js",
