@@ -1,9 +1,10 @@
 <html>
 	<head>
-		<title>NEJS 2016 - Audio Buffer</title>
+		<title>NEJS 2016 - Audio Buffer Decode Audio</title>
 	</head>
 	<body>
 
+		<p data-status>Decoding audio...</p>
 		<button data-play>Play</button>
 		<button data-stop>Stop</button>
 
@@ -12,6 +13,7 @@
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 			const nodes = {
+				'status': document.querySelector('[data-status]'),
 				'play': document.querySelector('[data-play]'),
 				'stop': document.querySelector('[data-stop]'),
 			};
@@ -24,7 +26,10 @@
 			})
 			.then(arrayBuffer => {
 				audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
+					console.log(decodedAudio);
+
 					bufferSource = decodedAudio;
+					nodes.status.innerHTML = 'Audio decoded.';
 
 					nodes.play.addEventListener('click', e => {
 						e.preventDefault();
