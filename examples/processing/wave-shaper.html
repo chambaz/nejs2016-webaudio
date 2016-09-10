@@ -24,13 +24,13 @@
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 			// DOM nodes
-			const nodes = {
+			const ui = {
 				audio: document.querySelector('[data-audio-source]'),
 				distortionSlider: document.querySelector('[data-distortion-slider]'),
 			};
 
 			// create media element source node
-			const audioSource = audioCtx.createMediaElementSource(nodes.audio);
+			const audioSource = audioCtx.createMediaElementSource(ui.audio);
 
 			// create wave shaper node
 			const waveShaper = audioCtx.createWaveShaper();
@@ -42,8 +42,8 @@
 			audioSource.connect(waveShaper);
 			waveShaper.connect(audioCtx.destination);
 
-			// distortion intensity slider change handler
-			nodes.distortionSlider.addEventListener('input', e => {
+			// update distortion intensity with slider
+			ui.distortionSlider.addEventListener('input', e => {
 				waveShaper.curve = makeDistortionCurve(Number(e.currentTarget.value));
 			});
 

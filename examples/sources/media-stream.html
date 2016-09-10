@@ -11,7 +11,8 @@
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-			const nodes = {
+			// DOM NODES
+			const ui = {
 				streamOn: document.querySelector('[data-stream-on]'),
 				streamOff: document.querySelector('[data-stream-off]'),
 			};
@@ -25,15 +26,13 @@
 				// create media stream from mic input and connect to output
 				mediaStream = audioCtx.createMediaStreamSource(stream);
 
-				// stream on button click handler
 				// connect media stream to output
-				nodes.streamOn.addEventListener('click', e => {
+				ui.streamOn.addEventListener('click', e => {
 					mediaStream.connect(audioCtx.destination);
 				});
 
-				// stream off button click handler
 				// disconnect media stream from output
-				nodes.streamOff.addEventListener('click', e => {
+				ui.streamOff.addEventListener('click', e => {
 					mediaStream.disconnect(audioCtx.destination);
 				});
 

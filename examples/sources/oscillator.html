@@ -36,8 +36,8 @@
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-			// DOM nodes
-			const nodes = {
+			// DOM nodes 
+			const ui = {
 				frequencySlider: document.querySelector('[data-frequency-slider]'),
 				sine: {
 					start:document.querySelector('[data-sine-start]'),
@@ -57,11 +57,11 @@
 
 			// create sine wave oscillator
 			// start and connect to output
-			nodes.sine.start.addEventListener('click', e => {
+			ui.sine.start.addEventListener('click', e => {
 				oscillators.sine = audioCtx.createOscillator();
 				oscillators.sine.type = 'sine'
 				// octave above slider value
-				oscillators.sine.frequency.value = nodes.frequencySlider.value * 2;
+				oscillators.sine.frequency.value = ui.frequencySlider.value * 2;
 				oscillators.sine.connect(audioCtx.destination);
 				oscillators.sine.start();
 
@@ -69,17 +69,17 @@
 			});
 
 			// stop sine wave
-			nodes.sine.stop.addEventListener('click', e => {
+			ui.sine.stop.addEventListener('click', e => {
 				oscillators.sine.stop();
 				delete oscillators.sine;
 			});
 
 			// create triangle wave oscillator
 			// start and connect to output
-			nodes.triangle.start.addEventListener('click', e => {
+			ui.triangle.start.addEventListener('click', e => {
 				oscillators.triangle = audioCtx.createOscillator();
 				oscillators.triangle.type = 'triangle'
-				oscillators.triangle.frequency.value = nodes.frequencySlider.value;
+				oscillators.triangle.frequency.value = ui.frequencySlider.value;
 				oscillators.triangle.connect(audioCtx.destination);
 				oscillators.triangle.start();
 
@@ -87,18 +87,18 @@
 			});
 
 			// stop triangle wave
-			nodes.triangle.stop.addEventListener('click', e => {
+			ui.triangle.stop.addEventListener('click', e => {
 				oscillators.triangle.stop();
 				delete oscillators.triangle;
 			});
 
 			// create square wave oscillator
 			// start and connect to output
-			nodes.square.start.addEventListener('click', e => {
+			ui.square.start.addEventListener('click', e => {
 				oscillators.square = audioCtx.createOscillator();
 				oscillators.square.type = 'square'
 				// octavte below slider value
-				oscillators.square.frequency.value = nodes.frequencySlider.value / 2;
+				oscillators.square.frequency.value = ui.frequencySlider.value / 2;
 				oscillators.square.connect(audioCtx.destination);
 				oscillators.square.start();
 
@@ -106,13 +106,13 @@
 			});
 
 			// stop square wave
-			nodes.square.stop.addEventListener('click', e => {
+			ui.square.stop.addEventListener('click', e => {
 				oscillators.square.stop();
 				delete oscillators.square;
 			});
 
 			// update oscillator frequencies with slider
-			nodes.frequencySlider.addEventListener('input', e => {
+			ui.frequencySlider.addEventListener('input', e => {
 				const val = e.currentTarget.value;
 
 				// octave above

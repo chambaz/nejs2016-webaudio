@@ -21,7 +21,7 @@
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 			// DOM nodes
-			const nodes = {
+			const ui = {
 				'status': document.querySelector('[data-status]'),
 				'play': document.querySelector('[data-play]'),
 				'stop': document.querySelector('[data-stop]'),
@@ -50,10 +50,11 @@
 					console.log(decodedAudio);
 
 					bufferSource = decodedAudio;
-					nodes.status.innerHTML = 'Audio decoded.';
+					ui.status.innerHTML = 'Audio decoded.';
 
-					// play button click handler
-					nodes.play.addEventListener('click', e => {
+					// create buffer, start and connect to delay
+					// connect delay to output
+					ui.play.addEventListener('click', e => {
 						e.preventDefault();
 
 						// buffer already started
@@ -73,8 +74,8 @@
 						buffer.start(0);
 					});
 
-					// stop button click handler
-					nodes.stop.addEventListener('click', e => {
+					// stop buffer
+					ui.stop.addEventListener('click', e => {
 						e.preventDefault();
 						buffer.stop(0);
 						buffer = false;
@@ -82,8 +83,8 @@
 				});
 			});
 
-			// delay slider change handler
-			nodes.slider.addEventListener('input', e => {
+			// update delay time with slider
+			ui.slider.addEventListener('input', e => {
 				delay.delayTime.value = e.currentTarget.value;
 			});
 

@@ -25,13 +25,13 @@
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 			// DOM nodes
-			const nodes = {
+			const ui = {
 				audio: document.querySelector('[data-audio-source]'),
 				reverbSlider: document.querySelector('[data-reverb-slider]'),
 			};
 
 			// create media element source node
-			const audioSource = audioCtx.createMediaElementSource(nodes.audio);
+			const audioSource = audioCtx.createMediaElementSource(ui.audio);
 
 			// create convolver node
 			const convolver = audioCtx.createConvolver();
@@ -69,8 +69,8 @@
 				});
 			});
 
-			// reverb mix slider change handler
-			nodes.reverbSlider.addEventListener('input', e => {
+			// update reverb mix with slider
+			ui.reverbSlider.addEventListener('input', e => {
 				convolverGain.gain.value = e.currentTarget.value;
 			});
 

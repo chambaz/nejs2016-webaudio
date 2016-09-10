@@ -13,7 +13,7 @@
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 			// DOM nodes
-			const nodes = {
+			const ui = {
 				'status': document.querySelector('[data-status]'),
 				'play': document.querySelector('[data-play]'),
 				'stop': document.querySelector('[data-stop]'),
@@ -34,10 +34,10 @@
 					console.log(decodedAudio);
 
 					buffer = decodedAudio;
-					nodes.status.innerHTML = 'Audio decoded.';
+					ui.status.innerHTML = 'Audio decoded.';
 
-					// play button click handler
-					nodes.play.addEventListener('click', e => {
+					// create buffer, start and connect to output
+					ui.play.addEventListener('click', e => {
 						e.preventDefault();
 
 						// buffer already started
@@ -52,8 +52,8 @@
 						bufferSource.start(0);
 					});
 
-					// stop button click handler
-					nodes.stop.addEventListener('click', e => {
+					// stop buffer
+					ui.stop.addEventListener('click', e => {
 						e.preventDefault();
 						bufferSource.stop(0);
 						bufferSource = false;

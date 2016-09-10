@@ -33,14 +33,14 @@
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 			// DOM nodes
-			const nodes = {
+			const ui = {
 				video: document.querySelector('[data-video-source]'),
 				frequencySlider: document.querySelector('[data-frequency-slider]'),
 				qSlider: document.querySelector('[data-q-slider]'),
 			};
 
 			// create media element source node
-			const videoSource = audioCtx.createMediaElementSource(nodes.video);
+			const videoSource = audioCtx.createMediaElementSource(ui.video);
 
 			// create biquad filter node
 			const biquadFilter = audioCtx.createBiquadFilter();
@@ -55,13 +55,13 @@
 			videoSource.connect(biquadFilter);
 			biquadFilter.connect(audioCtx.destination);
 
-			// frequency slider change handler
-			nodes.frequencySlider.addEventListener('input', e => {
+			// update biquad frequency with slider
+			ui.frequencySlider.addEventListener('input', e => {
 				biquadFilter.frequency.value = e.currentTarget.value;
 			});
 
-			// q slider change handler
-			nodes.qSlider.addEventListener('input', e => {
+			// update biquad q with slider
+			ui.qSlider.addEventListener('input', e => {
 				biquadFilter.Q.value = e.currentTarget.value;
 			});
 

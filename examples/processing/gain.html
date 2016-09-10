@@ -16,7 +16,7 @@
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-			// query slider DOM node
+			// gain slider DOM node
 			const gainSlider = document.querySelector('[data-gain-slider]');
 
 			// create oscillator node
@@ -40,7 +40,7 @@
 			// start oscillator
 			oscillator.start();
 
-			// gain slider change handler	
+			// update gain with slider
 			gainSlider.addEventListener('input', e => {
 				gainNode.gain.value = e.currentTarget.value;
 			});
