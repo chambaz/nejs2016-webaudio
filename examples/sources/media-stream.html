@@ -4,28 +4,43 @@
 	</head>
 	<body>
 
+		<button data-stream-on>Stream on</button>
+		<button data-stream-off>Stream off</button>
+
 		<script>
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-			// query DOM nodes used as audio source
-			const sourceElements = {
-				audio: document.querySelector('[data-audio-source]'),
-				video: document.querySelector('[data-video-source]'),
+			const nodes = {
+				streamOn: document.querySelector('[data-stream-on]'),
+				streamOff: document.querySelector('[data-stream-off]'),
 			};
 
-			// create media element source nodes
-			const sources = {
-				audio: audioCtx.createMediaElementSource(sourceElements.audio),
-				video: audioCtx.createMediaElementSource(sourceElements.video),
-			};
+			let mediaStream;
 
-			// connect source nodes to audio destination
-			sources.audio.connect(audioCtx.destination);
-			sources.video.connect(audioCtx.destination);
+			// get user microphone
+			navigator.mediaDevices.getUserMedia({
+				audio: true,
+			}).then(stream => {
+				// create media stream from mic input and connect to output
+				mediaStream = audioCtx.createMediaStreamSource(stream);
+
+				// stream on button click handler
+				// connect media stream to output
+				nodes.streamOn.addEventListener('click', e => {
+					mediaStream.connect(audioCtx.destination);
+				});
+
+				// stream off button click handler
+				// disconnect media stream from output
+				nodes.streamOff.addEventListener('click', e => {
+					mediaStream.disconnect(audioCtx.destination);
+				});
+
+				console.log(mediaStream);
+			});
 
 			console.log(audioCtx);
-			console.log(sources);
 		</script>
 	</body>
 </html>
