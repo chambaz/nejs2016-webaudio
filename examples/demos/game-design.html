@@ -7,36 +7,35 @@
 			height: 100%;
 			width: 100%;
 			margin: 0;
-			background: #aaa;
+			background: #777;
 		}
 
-		.goody {
+		.character {
 			width: 50px;
 			height: 50px;
-			background: blue;
+			background: white;
 			position: absolute;
-			top: 30%;
-			right: 80px;
+			top: 0;
+			left: 0;
 			z-index: 1;
 			transition: .3s;
 		}
 
-		.baddy {
+		.target {
 			width: 50px;
 			height: 50px;
 			background: black;
 			position: absolute;
-			top: 0;
-			left: 0;
+			bottom: 0;
+			right: 0;
 			z-index: 2;
-			transition: .3s;
 		}
 		</style>
 	</head>
 	<body>
 
-		<div data-baddy class="baddy"></div>
-		<div data-goody class="goody"></div>
+		<div data-character class="character"></div>
+		<div data-target class="target"></div>
 
 		<script>
 			// create web audio context
@@ -44,40 +43,103 @@
 
 			// DOM nodes
 			const ui = {
-				goody: document.querySelector('[data-goody]'),
-				baddy: document.querySelector('[data-baddy]'),
+				character: document.querySelector('[data-character]'),
+				target: document.querySelector('[data-target]'),
 			};
+
+			const targetPosition = {
+				top: Number(ui.character.style.top.replace(/px/, '')),
+				left: window.innerWidth - 50,
+			};
+
+			const notes = [
+				[261.63, 523.26, 1046.52],
+				[293.66, 587.32, 1174.64],
+				[311.13, 622.26, 1244.52],
+				[392, 784, 1568],
+			];
+
+			const gainNode = audioCtx.createGain();
+			gainNode.gain.value = .8;
+
+			// create oscillators
+			const oscillators = {
+				low: audioCtx.createOscillator(),
+				mid: audioCtx.createOscillator(),
+				high: audioCtx.createOscillator(),
+			};
+
+			let currentNote = 0;
+			let speed = window.innerWidth;
+
+			oscillators.low.type = 'sine';
+			oscillators.low.frequency.value = notes[0][0];
+
+			oscillators.mid.type = 'sine';
+			oscillators.mid.frequency.value = notes[0][1];
+
+			oscillators.high.type = 'sine';
+			oscillators.high.frequency.value = notes[0][2];
+
+			oscillators.low.connect(gainNode);
+			oscillators.mid.connect(gainNode);
+			oscillators.high.connect(gainNode);
+			gainNode.connect(audioCtx.destination);
+
+			oscillators.low.start(0);
+			oscillators.mid.start(0);
+			oscillators.high.start(0);
+
+			function note() {
+				oscillators.low.frequency.value = notes[currentNote][0];
+				oscillators.mid.frequency.value = notes[currentNote][1];
+				oscillators.high.frequency.value = notes[currentNote][2];
+
+				if (currentNote >= notes.length - 1) {
+					currentNote = 0;
+				} else {
+					currentNote++;
+				}
+
+				setTimeout(note, speed);
+			}
+
+			note();
 
 			// move baddy on key down
 			document.addEventListener('keydown', e => {
 
 				// calculate current position
 				const coords = {
-					top: Number(ui.baddy.style.top.replace(/px/, '')),
-					left: Number(ui.baddy.style.left.replace(/px/, '')),
+					top: Number(ui.character.style.top.replace(/px/, '')),
+					left: Number(ui.character.style.left.replace(/px/, '')),
 				};
 
 				switch(e.keyCode) {
 					// left
 					case 37:
-						ui.baddy.style.left = `${coords.left - 20}px`;
+						ui.character.style.left = `${coords.left - 20}px`;
 					break;
 
 					// up
 					case 38:
-						ui.baddy.style.top = `${coords.top - 20}px`;
+						ui.character.style.top = `${coords.top - 20}px`;
 					break;
 
 					// right
 					case 39:
-						ui.baddy.style.left = `${coords.left + 20}px`;
+						ui.character.style.left = `${coords.left + 20}px`;
 					break;
 
 					// down
 					case 40:
-						ui.baddy.style.top = `${coords.top + 20}px`;
+						ui.character.style.top = `${coords.top + 20}px`;
 					break;
 				}
+
+				console.log(targetPosition.left, coords.left);
+
+				speed = targetPosition.left - coords.left;
 			});
 
 		</script>
