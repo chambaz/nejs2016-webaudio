@@ -25,4 +25,10 @@ Open [http://localhost:8080](http://localhost:8080)
 	- [Wave Shaper](examples/processing/wave-shaper.html)
 	- [Convolver](examples/processing/convolver.html)
 - *Specialized*
-	- [Analyzer](examples/processing/analyzer.html)
+	- [Analyzer](examples/specialized/analyzer.html)
+	- [Spatialization](examples/specialized/spatialization.html)
+
+**Use Cases**
+
+- [Audio Visualization](examples/usecases/audio-visualization.html)
+- [Game Design](examples/usecases/game-design.html)
