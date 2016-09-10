@@ -1,12 +1,34 @@
 <html>
 	<head>
 		<title>NEJS 2016 - Audio Buffer Decode Audio</title>
+
+		<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+			font-size: 20px;
+		}
+
+		.buttons {
+			display: flex;
+		}
+
+		button {
+			font-size: 30px;
+			margin: 0 10px;
+		}
+		</style>
 	</head>
 	<body>
 
 		<p data-status>Decoding audio...</p>
-		<button data-play>Play</button>
-		<button data-stop>Stop</button>
+		<div class="buttons">
+			<button data-play>Play</button>
+			<button data-stop>Stop</button>
+		</div>
 
 		<script>
 			// create web audio context
