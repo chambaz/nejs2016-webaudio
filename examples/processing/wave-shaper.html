@@ -14,10 +14,10 @@
 		<input
 			data-distortion-slider
 			type="range"
-			value="1000"
-			min="1000"
-			max="10000"
-			step="1" />
+			value="0"
+			min="0"
+			max="300"
+			step=".05" />
 
 		<script>
 			// create web audio context
@@ -34,7 +34,7 @@
 
 			// create wave shaper node
 			const waveShaper = audioCtx.createWaveShaper();
-			waveShaper.curve = makeDistortionCurve();
+			waveShaper.curve = makeDistortionCurve(0);
 			waveShaper.oversample = '4x';
 
 			// connect video source to biquad filter
@@ -42,13 +42,16 @@
 			audioSource.connect(waveShaper);
 			waveShaper.connect(audioCtx.destination);
 
-			// frequency slider change handler
-			// nodes.frequencySlider.addEventListener('input', e => {
-			// 	biquadFilter.frequency.value = e.currentTarget.value;
-			// });
+			// distortion intensity slider change handler
+			nodes.distortionSlider.addEventListener('input', e => {
+				waveShaper.curve = makeDistortionCurve(Number(e.currentTarget.value));
+			});
 
-			function makeDistortionCurve(amount = 400) {
+			// distortion algorithm
+			// Stack Overflow: http://stackoverflow.com/questions/22312841/waveshaper-node-in-webaudio-how-to-emulate-distortion/22313408#22313408
+			function makeDistortionCurve(amount) {
 				const k = typeof amount === 'number' ? amount : 50;
+				console.log(k, amount);
 				const n_samples = 44100;
 				const curve = new Float32Array(n_samples);
 				const deg = Math.PI / 180;
