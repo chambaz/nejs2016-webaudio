@@ -17,10 +17,9 @@
 				'stop': document.querySelector('[data-stop]'),
 			};
 
+			// create two second, stereo audio buffer
 			const channels = 2;
 			const frameCount = audioCtx.sampleRate * 2.0;
-
-			// create 2 second stereo audio buffer
 			const buffer = audioCtx.createBuffer(
 				channels,
 				frameCount,
@@ -29,21 +28,20 @@
 
 			let bufferSource;
 
+			// play button click handler
 			nodes.play.addEventListener('click', e => {
 				e.preventDefault();
 
+				// buffer already started
 				if (bufferSource) {
 					return;
 				}
 
-				// Fill the buffer with white noise;
-				// just random values between -1.0 and 1.0
+				// fill each channel of the buffer with white noise
+				// random values between -1.0 and 1.0
 				for (var channel = 0; channel < channels; channel++) {
-					// This gives us the actual array that contains the data
 					const buffering = buffer.getChannelData(channel);
 					for (var i = 0; i < frameCount; i++) {
-						// Math.random() is in [0; 1.0]
-						// audio needs to be in [-1.0; 1.0]
 						buffering[i] = Math.random() * 2 - 1;
 					}
 				}
@@ -63,6 +61,7 @@
 				bufferSource.start(0);
 			});
 
+			// stop button click handler
 			nodes.stop.addEventListener('click', e => {
 				e.preventDefault();
 				bufferSource.stop(0);

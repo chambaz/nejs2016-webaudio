@@ -12,6 +12,7 @@
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+			// query DOM nodes
 			const nodes = {
 				'status': document.querySelector('[data-status]'),
 				'play': document.querySelector('[data-play]'),
@@ -20,30 +21,38 @@
 
 			let bufferSource, buffer;
 
+			// fetch mp3
 			fetch('assets/digitalsurgeons.mp3')
+
+			// fetch as array buffer
 			.then(response => {
 				return response.arrayBuffer();
 			})
 			.then(arrayBuffer => {
+				// decode audio data from array buffer
 				audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
 					console.log(decodedAudio);
 
 					bufferSource = decodedAudio;
 					nodes.status.innerHTML = 'Audio decoded.';
 
+					// play button click handler
 					nodes.play.addEventListener('click', e => {
 						e.preventDefault();
 
+						// buffer already started
 						if (buffer) {
 							false;
 						}
 
+						// create new buffer, connect to output and play
 						buffer = audioCtx.createBufferSource();
 						buffer.buffer = bufferSource;
 						buffer.connect(audioCtx.destination);
 						buffer.start(0);
 					});
 
+					// stop button click handler
 					nodes.stop.addEventListener('click', e => {
 						e.preventDefault();
 						buffer.stop(0);
