@@ -17,3 +17,5 @@ Open [http://localhost:8080](http://localhost:8080)
 	- [Media Element](examples/sources/media-element.html)
 	- [Audio Buffer](examples/sources/audio-buffer.html)
 	- [Audio Buffer Decode Audio](examples/sources/audio-buffer-decode-audio.html)
+- *Processing*
+	- [Gain](examples/processing/gain.html)
