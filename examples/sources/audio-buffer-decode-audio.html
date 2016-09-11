@@ -41,7 +41,7 @@
 				stop: document.querySelector('[data-stop]'),
 			};
 
-			let bufferSource, buffer;
+			let bufferSource;
 
 			// fetch mp3
 			fetch('/assets/digitalsurgeons.mp3')
@@ -50,36 +50,33 @@
 			.then(response => {
 				return response.arrayBuffer();
 			})
+			// decode audio data from array buffer
 			.then(arrayBuffer => {
-				// decode audio data from array buffer
-				audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
-					console.log(decodedAudio);
+				return audioCtx.decodeAudioData(arrayBuffer);
+			}).then(decodedAudio => {
+				ui.status.innerHTML = 'Audio decoded.';
 
-					buffer = decodedAudio;
-					ui.status.innerHTML = 'Audio decoded.';
+				// create buffer, start and connect to output
+				ui.play.addEventListener('click', e => {
+					e.preventDefault();
 
-					// create buffer, start and connect to output
-					ui.play.addEventListener('click', e => {
-						e.preventDefault();
+					// buffer already started
+					if (bufferSource) {
+						false;
+					}
 
-						// buffer already started
-						if (bufferSource) {
-							false;
-						}
+					// create new buffer, connect to output and play
+					bufferSource = audioCtx.createBufferSource();
+					bufferSource.buffer = decodedAudio;
+					bufferSource.connect(audioCtx.destination);
+					bufferSource.start(0);
+				});
 
-						// create new buffer, connect to output and play
-						bufferSource = audioCtx.createBufferSource();
-						bufferSource.buffer = buffer;
-						bufferSource.connect(audioCtx.destination);
-						bufferSource.start(0);
-					});
-
-					// stop buffer
-					ui.stop.addEventListener('click', e => {
-						e.preventDefault();
-						bufferSource.stop(0);
-						bufferSource = false;
-					});
+				// stop buffer
+				ui.stop.addEventListener('click', e => {
+					e.preventDefault();
+					bufferSource.stop(0);
+					bufferSource = false;
 				});
 			});
 

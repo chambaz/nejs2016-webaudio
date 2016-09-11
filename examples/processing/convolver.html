@@ -64,7 +64,7 @@
 			const convolverGain = audioCtx.createGain();
 			convolverGain.gain.value = 0;
 
-			let bufferSource, buffer;
+			let bufferSource;
 
 			// fetch impulse mp3
 			fetch('/assets/impulse.mp3')
@@ -73,24 +73,25 @@
 			.then(response => {
 				return response.arrayBuffer();
 			})
+			// decode audio data from array buffer
 			.then(arrayBuffer => {
-				// decode audio data from array buffer
-				audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
-					// set convolver buffer to decoded impulse
-					convolver.buffer = decodedAudio;
+				return audioCtx.decodeAudioData(arrayBuffer);
+			})
+			.then(decodedAudio => {
+				// set convolver buffer to decoded impulse
+				convolver.buffer = decodedAudio;
 
-					// connect audio element source directly to output
-					audioSource.connect(audioCtx.destination);
+				// connect audio element source directly to output
+				audioSource.connect(audioCtx.destination);
 
-					// connect audio element source to convolver gain
-					// connect convolver gain to convolver
-					// connect convolver to output
-					audioSource.connect(convolverGain);
-					convolverGain.connect(convolver);
-					convolver.connect(audioCtx.destination);
+				// connect audio element source to convolver gain
+				// connect convolver gain to convolver
+				// connect convolver to output
+				audioSource.connect(convolverGain);
+				convolverGain.connect(convolver);
+				convolver.connect(audioCtx.destination);
 
-					console.log(convolver);
-				});
+				console.log(convolver);
 			});
 
 			// update reverb mix with slider

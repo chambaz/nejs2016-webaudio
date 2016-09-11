@@ -62,7 +62,7 @@
 			const gainNode = audioCtx.createGain();
 			gainNode.gain.value = .7;
 
-			let bufferSource, buffer;
+			let bufferSource;
 
 			// fetch mp3
 			fetch('/assets/digitalsurgeons.mp3')
@@ -71,42 +71,40 @@
 			.then(response => {
 				return response.arrayBuffer();
 			})
+			// decode audio data from array buffer
 			.then(arrayBuffer => {
-				// decode audio data from array buffer
-				audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
-					console.log(decodedAudio);
+				return audioCtx.decodeAudioData(arrayBuffer);
+			})
+			.then(decodedAudio => {
+				ui.status.innerHTML = 'Audio decoded.';
 
-					bufferSource = decodedAudio;
-					ui.status.innerHTML = 'Audio decoded.';
+				// create buffer, start and connect to delay
+				// connect delay to output
+				ui.play.addEventListener('click', e => {
+					e.preventDefault();
 
-					// create buffer, start and connect to delay
-					// connect delay to output
-					ui.play.addEventListener('click', e => {
-						e.preventDefault();
+					// bufferSource already started
+					if (bufferSource) {
+						false;
+					}
 
-						// buffer already started
-						if (buffer) {
-							false;
-						}
+					// create new buffer, connect to output and play
+					bufferSource = audioCtx.createBufferSource();
+					bufferSource.buffer = decodedAudio;
 
-						// create new buffer, connect to output and play
-						buffer = audioCtx.createBufferSource();
-						buffer.buffer = bufferSource;
+					bufferSource.connect(audioCtx.destination);
+					bufferSource.connect(delay);
+					delay.connect(gainNode)
+					gainNode.connect(audioCtx.destination);
 
-						buffer.connect(audioCtx.destination);
-						buffer.connect(delay);
-						delay.connect(gainNode)
-						gainNode.connect(audioCtx.destination);
+					bufferSource.start(0);
+				});
 
-						buffer.start(0);
-					});
-
-					// stop buffer
-					ui.stop.addEventListener('click', e => {
-						e.preventDefault();
-						buffer.stop(0);
-						buffer = false;
-					});
+				// stop buffer
+				ui.stop.addEventListener('click', e => {
+					e.preventDefault();
+					bufferSource.stop(0);
+					bufferSource = false;
 				});
 			});
 

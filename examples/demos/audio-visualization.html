@@ -96,7 +96,7 @@
 		const bufferLength = analyser.frequencyBinCount;
 		const dataArray = new Uint8Array(bufferLength);
 
-		let bufferSource, buffer;
+		let bufferSource;
 
 		// fetch mp3
 		fetch('/assets/digitalsurgeons.mp3')
@@ -105,28 +105,27 @@
 		.then(response => {
 			return response.arrayBuffer();
 		})
+		// decode audio data from array buffer
 		.then(arrayBuffer => {
-			// decode audio data from array buffer
-			audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
-				buffer = decodedAudio;
+			return audioCtx.decodeAudioData(arrayBuffer);
+		})
+		.then(decodedAudio => {
+			// create new buffer and connect to analyser
+			// connect analyser to output and start buffer
+			bufferSource = audioCtx.createBufferSource();
+			bufferSource.buffer = decodedAudio;
+			bufferSource.connect(analyser);
+			analyser.connect(audioCtx.destination);
+			bufferSource.start(0);
 
-				// create new buffer and connect to analyser
-				// connect analyser to output and start buffer
-				bufferSource = audioCtx.createBufferSource();
-				bufferSource.buffer = buffer;
-				bufferSource.connect(analyser);
-				analyser.connect(audioCtx.destination);
-				bufferSource.start(0);
+			// set playing to true and reset on ended event
+			config.playing = true;
+			bufferSource.addEventListener('ended', e => {
+				config.playing = false;
+			})
 
-				// set playing to true and reset on ended event
-				config.playing = true;
-				bufferSource.addEventListener('ended', e => {
-					config.playing = false;
-				})
-
-				// kick off analysis
-				requestAnimationFrame(analyze);
-			});
+			// kick off analysis
+			requestAnimationFrame(analyze);
 		});
 
 		// call analyze function at 60fps

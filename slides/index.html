@@ -145,13 +145,16 @@ navigator.mediaDevices.getUserMedia({
 					<section data-transition="fade">
 						<h1 class="title--medium">Audio Buffer</h1>
 						<pre><code class="js" data-trim>
+// create web audio context
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
 // create two second, stereo audio buffer
 const buffer = audioCtx.createBuffer(2, audioCtx.sampleRate * 2.0, audioCtx.sampleRate);
 
 // create buffer source node
 const bufferSource = audioCtx.createBufferSource();
 
-// get stereo channel data 
+// get stereo channel data
 const channels = [
 	buffer.getChannelData(0),
 	buffer.getChannelData(1),
@@ -164,7 +167,7 @@ channels.forEach(channel => {
 	});
 })
 
-// set the buffer in the AudioBufferSourceNode
+// set the source buffer
 bufferSource.buffer = buffer;
 
 // connect buffer to output
@@ -180,6 +183,35 @@ bufferSource.start(0);
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Audio Buffer Decode</h1>
+						<pre><code class="js" data-trim>
+// create web audio context
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+let bufferSource, buffer;
+
+// fetch mp3
+fetch('/assets/digitalsurgeons.mp3')
+
+// fetch as array buffer
+.then(response => {
+	return response.arrayBuffer();
+})
+// decode audio data from array buffer
+.then(arrayBuffer => {
+	return audioCtx.decodeAudioData(arrayBuffer);
+})
+// create new buffer, connect to output and play
+.then(arrayBuffer => {
+	buffer = decodedAudio;
+	bufferSource = audioCtx.createBufferSource();
+	bufferSource.buffer = buffer;
+	bufferSource.connect(audioCtx.destination);
+	bufferSource.start(0);
+});
+						</code></pre>
+						<a class="btn" href="/examples/sources/audio-buffer.html" target="_blank">
+							View Example
+						</a>
 					</section>
 
 					<section data-transition="fade">
