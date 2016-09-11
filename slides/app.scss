@@ -1,5 +1,5 @@
 @import 'normalize-scss/sass/normalize';
-@import 'reveal.js/css/reveal';
-@import 'reveal.js/css/theme/white.css';
+@import 'reveal.js/css/reveal.scss';
+@import 'reveal.js/css/theme/source/white.scss';
 
 @include normalize();
