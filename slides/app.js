@@ -1,4 +1,4 @@
-(() => {
-	const test = 'test';
-	console.log('hi', test);
-})();
+const Reveal = require('reveal.js');
+
+Reveal.initialize();
+console.log(Reveal);
