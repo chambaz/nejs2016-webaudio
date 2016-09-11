@@ -70,13 +70,10 @@
 			fetch('/assets/impulse.mp3')
 
 			// fetch as array buffer
-			.then(response => {
-				return response.arrayBuffer();
-			})
+			.then(response => response.arrayBuffer())
+			
 			// decode audio data from array buffer
-			.then(arrayBuffer => {
-				return audioCtx.decodeAudioData(arrayBuffer);
-			})
+			.then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
 			.then(decodedAudio => {
 				// set convolver buffer to decoded impulse
 				convolver.buffer = decodedAudio;

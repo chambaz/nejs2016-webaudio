@@ -68,13 +68,10 @@
 			fetch('/assets/digitalsurgeons.mp3')
 
 			// fetch as array buffer
-			.then(response => {
-				return response.arrayBuffer();
-			})
+			.then(response => response.arrayBuffer())
+			
 			// decode audio data from array buffer
-			.then(arrayBuffer => {
-				return audioCtx.decodeAudioData(arrayBuffer);
-			})
+			.then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
 			.then(decodedAudio => {
 				ui.status.innerHTML = 'Audio decoded.';
 
