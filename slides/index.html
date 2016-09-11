@@ -115,11 +115,31 @@ const mediaElementSource = audioCtx.createMediaElementSource(sourceElements.audi
 // connect source nodes to output
 sources.audio.connect(audioCtx.destination);
 						</code></pre>
-						<a class="btn" href="/examples/sources/media-element.html" target="_blank">View Example</a>
+						<a class="btn" href="/examples/sources/media-element.html" target="_blank">
+							View Example
+						</a>
 					</section>
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Media Stream</h1>
+						<pre><code class="js" data-trim>
+// create web audio context
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// get user microphone input
+navigator.mediaDevices.getUserMedia({
+	audio: true,
+}).then(stream => {
+	// create media stream from mic input and connect to output
+	mediaStream = audioCtx.createMediaStreamSource(stream);
+
+	// connect media stream to output
+	mediaStream.connect(audioCtx.destination);
+});
+						</code></pre>
+						<a class="btn" href="/examples/sources/media-stream.html" target="_blank">
+							View Example
+						</a>
 					</section>
 
 					<section data-transition="fade">
