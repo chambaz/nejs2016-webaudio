@@ -52,13 +52,16 @@
 				}
 
 				// fill each channel of the buffer with white noise
-				// random values between -1.0 and 1.0
-				for (var channel = 0; channel < channels; channel++) {
-					const buffering = buffer.getChannelData(channel);
-					for (var i = 0; i < frameCount; i++) {
-						buffering[i] = Math.random() * 2 - 1;
-					}
-				}
+				const channels = [
+					buffer.getChannelData(0),
+					buffer.getChannelData(1),
+				];
+
+				channels.forEach(channel => {
+					buffer.getChannelData(channel).forEach((val, key, arr) => {
+						arr[key] = Math.random() * 2 - 1;
+					});
+				})
 
 				// Get an AudioBufferSourceNode.
 				// This is the AudioNode to use when we want to play an AudioBuffer

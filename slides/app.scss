@@ -59,8 +59,14 @@ $red: #c0392b;
 		background: $orange;
 	}
 
+	> .slides {
+		width: 90% !important;
+		overflow: auto !important;
+		overflow: -moz-scrollbars-none;
+	}
+
 	code {
-		font-size: 20px;
+		font-size: 18px;
 		line-height: 1.5;
 		margin: 40px auto;
 		padding: 20px 30px;

@@ -144,6 +144,38 @@ navigator.mediaDevices.getUserMedia({
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Audio Buffer</h1>
+						<pre><code class="js" data-trim>
+// create two second, stereo audio buffer
+const buffer = audioCtx.createBuffer(2, audioCtx.sampleRate * 2.0, audioCtx.sampleRate);
+
+// create buffer source node
+const bufferSource = audioCtx.createBufferSource();
+
+// get stereo channel data 
+const channels = [
+	buffer.getChannelData(0),
+	buffer.getChannelData(1),
+];
+
+// fill each channel of the buffer with white noise
+channels.forEach(channel => {
+	buffer.getChannelData(channel).forEach((val, key, arr) => {
+		arr[key] = Math.random() * 2 - 1;
+	});
+})
+
+// set the buffer in the AudioBufferSourceNode
+bufferSource.buffer = buffer;
+
+// connect buffer to output
+bufferSource.connect(audioCtx.destination);
+
+// start the source playing
+bufferSource.start(0);
+						</code></pre>
+						<a class="btn" href="/examples/sources/audio-buffer.html" target="_blank">
+							View Example
+						</a>
 					</section>
 
 					<section data-transition="fade">
