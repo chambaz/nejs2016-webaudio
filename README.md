@@ -7,7 +7,9 @@ A collection of WebAudio examples for NEJS 2016
 	$ npm install
 	$ npm start
 
-Open [http://localhost:8080](http://localhost:8080)
+**Start**: [http://localhost:8080](http://localhost:8080)
+
+**Slides**: [http://localhost:8080/slides](http://localhost:8080/slides)
 
 **Examples**
 
