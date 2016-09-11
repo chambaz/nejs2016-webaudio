@@ -18,7 +18,8 @@
     ]
   },
   "scripts": {
-    "start": "npm run watch:js & npm run watch:css & http-server",
+    "start": "npm run build:js & npm run build:css & http-server",
+    "dev": "npm run watch:js & npm run watch:css & http-server",
 	"watch:js": "watchify slides/app.js -o slides/dist/app.js -dv",
     "watch:css": "nodemon -e scss -x \"npm run build:css\"",
     "build:js": "browserify slides/app.js -g uglifyify | uglifyjs -cm > slides/dist/app.js",
