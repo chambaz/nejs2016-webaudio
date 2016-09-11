@@ -209,13 +209,43 @@ fetch('/assets/digitalsurgeons.mp3')
 	bufferSource.start(0);
 });
 						</code></pre>
-						<a class="btn" href="/examples/sources/audio-buffer.html" target="_blank">
+						<a class="btn" href="/examples/sources/audio-buffer-decode-audio.html" target="_blank">
 							View Example
 						</a>
 					</section>
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Oscillator</h1>
+						<pre><code class="js" data-trim>
+// create web audio context
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+const oscillators = {};
+
+// create sine wave oscillator, start and connect to output
+oscillators.sine = audioCtx.createOscillator();
+oscillators.sine.type = 'sine'
+oscillators.sine.frequency.value = 880;
+oscillators.sine.connect(audioCtx.destination);
+oscillators.sine.start();
+
+// create triangle wave oscillator, start and connect to output
+oscillators.triangle = audioCtx.createOscillator();
+oscillators.triangle.type = 'triangle'
+oscillators.triangle.frequency.value = 440;
+oscillators.triangle.connect(audioCtx.destination);
+oscillators.triangle.start();
+
+// create square wave oscillator, start and connect to output
+oscillators.square = audioCtx.createOscillator();
+oscillators.square.type = 'square'
+oscillators.square.frequency.value = 220;
+oscillators.square.connect(audioCtx.destination);
+oscillators.square.start();
+						</code></pre>
+						<a class="btn" href="/examples/sources/oscillator.html" target="_blank">
+							View Example
+						</a>
 					</section>
 				</section>
 
