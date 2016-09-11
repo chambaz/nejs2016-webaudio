@@ -3,14 +3,40 @@
 		<title>NEJS 2016 - Audio Visualization</title>
 
 		<style>
+		@keyframes grow-fade {
+			0% {
+				transform: scale(1);
+				opacity: 1;
+			}
 
+			100% {
+				transform: scale(2);
+				opacity: 0;
+			}
+		}
+
+		.piece {
+			border-radius: 100%;
+			width: 100px;
+			height: 100px;
+			background: red;
+			position: absolute;
+			opacity: 1;
+			transform: scale(1);
+			top: 30%;
+			left: 25%;
+			animation: grow-fade 2s;
+			animation-fill-mode: forwards;
+		}
 		</style>
 	</head>
 	<body>
 
 
 		<script>
-		
+		const piece = document.createElement('div');
+		piece.classList.add('piece');
+		document.body.appendChild(piece);
 		</script>
 	</body>
 </html>
