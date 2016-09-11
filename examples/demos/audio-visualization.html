@@ -17,16 +17,37 @@
 
 		.piece {
 			border-radius: 100%;
-			width: 100px;
-			height: 100px;
-			background: red;
 			position: absolute;
 			opacity: 1;
-			transform: scale(1);
+			transform: scale(1) translate3d(0, 0, 0);
 			top: 30%;
 			left: 25%;
 			animation: grow-fade 2s;
 			animation-fill-mode: forwards;
+		}
+
+		.piece.type-1 {
+			width: 100px;
+			height: 100px;
+			background: red;
+		}
+
+		.piece.type-2 {
+			width: 75px;
+			height: 75px;
+			background: blue;
+		}
+
+		.piece.type-3 {
+			width: 50px;
+			height: 50px;
+			background: green;
+		}
+
+		.piece.type-4 {
+			width: 25px;
+			height: 25px;
+			background: yellow;
 		}
 		</style>
 	</head>
@@ -34,30 +55,116 @@
 
 
 		<script>
-		const dimensions = {
+		// setInterval(addLow, 600);
+		// setInterval(addMid, 400);
+		// setInterval(addHigh, 200);
+
+		// create web audio context
+		const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+		const config = {
 			width: window.innerWidth,
 			height: window.innerHeight,
+			playing: false,
 		};
+
+		// create analyzer node
+		const analyser = audioCtx.createAnalyser();
+		// set size of fast fourier transform
+		analyser.fftSize = 64;
+
+		// construct Uint8Array for analysis data
+		const bufferLength = analyser.frequencyBinCount;
+		const dataArray = new Uint8Array(bufferLength);
+
+		let bufferSource, buffer;
+
+		// fetch mp3
+		fetch('/assets/digitalsurgeons.mp3')
+
+		// fetch as array buffer
+		.then(response => {
+			return response.arrayBuffer();
+		})
+		.then(arrayBuffer => {
+			// decode audio data from array buffer
+			audioCtx.decodeAudioData(arrayBuffer, decodedAudio => {
+				console.log(decodedAudio);
+
+				buffer = decodedAudio;
+				// create new buffer, connect to output and play
+				bufferSource = audioCtx.createBufferSource();
+				bufferSource.buffer = buffer;
+				bufferSource.connect(analyser);
+				analyser.connect(audioCtx.destination);
+				bufferSource.start(0);
+
+				config.playing = true;
+				bufferSource.addEventListener('ended', e => {
+					config.playing = false;
+				})
+
+				// kick off analysis
+				requestAnimationFrame(analyze);
+			});
+		});
+
+		// call analyze function at 60fps
+		function analyze() {
+			// analyze audio at this point in time
+			analyser.getByteFrequencyData(dataArray);
+
+			const dataSplice = dataArray.slice(8, 16);
+
+			console.log(dataSplice);
+			dataSplice.forEach((bin, index) => {
+				let type = false;
+
+				if (index <= 4 && bin > 200) {
+					type = 1;
+				} else if (index <= 8 && bin > 180) {
+					type = 2;
+				} else if (index <= 12 && bin > 160) {
+					type = 3;
+				} else if (index <= 16 && bin > 140) {
+					type = 4;
+				}
+
+				if (!type) {
+					return;
+				}
+
+				requestAnimationFrame(addPiece.bind(this, `type-${type}`));
+			});
+
+			// recursivly call function every 60fps
+			if (!config.playing) {
+				return;
+			}
+
+			requestAnimationFrame(analyze);
+		}
 
 		function randomNumber(min, max) {
 			return Math.floor(Math.random() * (max - min + 1)) + min;
 		}
 
-		function addPiece() {
+		function addPiece(cls = '') {
 			const piece = document.createElement('div');
 			const pos = {
-				top: randomNumber(0, dimensions.height),
-				left: randomNumber(0, dimensions.width),
+				top: randomNumber(0, config.height),
+				left: randomNumber(0, config.width),
 			};
 
-			piece.classList.add('piece');
+			piece.classList.add('piece', cls);
 			piece.style.top = `${pos.top}px`;
 			piece.style.left = `${pos.left}px`;
 
 			document.body.appendChild(piece);
 		}
 
-		setInterval(addPiece, 1000);
+		console.log(audioCtx);
+		console.log(analyser);
 		</script>
 	</body>
 </html>
