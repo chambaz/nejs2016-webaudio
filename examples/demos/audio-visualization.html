@@ -34,9 +34,30 @@
 
 
 		<script>
-		const piece = document.createElement('div');
-		piece.classList.add('piece');
-		document.body.appendChild(piece);
+		const dimensions = {
+			width: window.innerWidth,
+			height: window.innerHeight,
+		};
+
+		function randomNumber(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+
+		function addPiece() {
+			const piece = document.createElement('div');
+			const pos = {
+				top: randomNumber(0, dimensions.height),
+				left: randomNumber(0, dimensions.width),
+			};
+
+			piece.classList.add('piece');
+			piece.style.top = `${pos.top}px`;
+			piece.style.left = `${pos.left}px`;
+
+			document.body.appendChild(piece);
+		}
+
+		setInterval(addPiece, 1000);
 		</script>
 	</body>
 </html>
