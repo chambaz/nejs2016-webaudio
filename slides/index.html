@@ -21,9 +21,10 @@
 					<h1 class="title--small">A synthesizer in the browser.</h1>
 				</section>
 				<section data-transition="fade">
-					<h1 class="title--small">AudioContext</h1>
-					<pre><code data-trim>
-					var test = 'test';
+					<h1 class="title">AudioContext</h1>
+					<pre class="fragment"><code class="js" data-trim>
+// create web audio context
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 					</code></pre>
 				</section>
 			</div>

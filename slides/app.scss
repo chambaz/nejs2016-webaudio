@@ -1,5 +1,6 @@
 @import 'normalize-scss/sass/normalize';
 @import 'reveal.js/css/reveal.scss';
+@import '../lib/css/atom-one-dark.css';
 
 $orange: #f28832;
 
@@ -27,43 +28,55 @@ $orange: #f28832;
 		url('/slides/dist/fonts/tisa/tisapro-regular-webfont.svg#ProximaLight') format('svg');
 }
 
-.reveal .controls .navigate-right,
-.reveal .controls .navigate-right.enabled {
-	border-left-color: $orange;
-}
+.reveal {
 
-.reveal .controls .navigate-up,
-.reveal .controls .navigate-up.enabled {
-	border-bottom-color: $orange;
-}
+	.controls .navigate-right,
+	.controls .navigate-right.enabled {
+		border-left-color: $orange;
+	}
 
-.reveal .controls .navigate-down,
-.reveal .controls .navigate-down.enabled {
-	border-top-color: $orange;
-}
+	.controls .navigate-up,
+	.controls .navigate-up.enabled {
+		border-bottom-color: $orange;
+	}
 
-.reveal .controls .navigate-left,
-.reveal .controls .navigate-left.enabled {
-	border-right-color: $orange;
-}
+	.controls .navigate-down,
+	.controls .navigate-down.enabled {
+		border-top-color: $orange;
+	}
 
-.reveal .progress span {
-	background: $orange;
-}
+	.controls .navigate-left,
+	.controls .navigate-left.enabled {
+		border-right-color: $orange;
+	}
 
-h1.title {
-	font-family: 'Proxima';
-	font-weight: 400;
-	font-size: 100px;
-	text-transform: uppercase;
-}
+	.progress span {
+		background: $orange;
+	}
 
-h1.title--medium {
-	@extend h1.title;
-	font-size: 60px;
-}
+	code {
+		font-size: 20px;
+		line-height: 1.5;
+		margin: 40px auto;
+		padding: 20px 30px;
+		text-align: left;
+		width: 80%;
+	}
 
-h1.title--small {
-	@extend h1.title;
-	font-size: 40px;
+	h1.title {
+		font-family: 'Proxima';
+		font-weight: 400;
+		font-size: 100px;
+		text-transform: uppercase;
+	}
+
+	h1.title--medium {
+		@extend h1.title;
+		font-size: 60px;
+	}
+
+	h1.title--small {
+		@extend h1.title;
+		font-size: 40px;
+	}
 }
