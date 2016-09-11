@@ -61,8 +61,8 @@
 
 			// call analyze function at 60fps
 			function analyze() {
-				// analyze audio at this point in time
-				analyser.getByteTimeDomainData(dataArray);
+				// get frequency data of audio at this point in time
+				analyser.getByteFrequencyData(dataArray);
 
 				// update analaysis in DOM, prettify JSON
 				ui.analysis.innerHTML = JSON.stringify(dataArray)
