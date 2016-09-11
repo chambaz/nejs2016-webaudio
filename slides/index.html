@@ -8,20 +8,25 @@
 
 		<div class="reveal">
 			<div class="slides">
+
 				<section data-transition="fade">
 					<h1 class="title">JavaScript and<br />the WebAudio API</h1>
 				</section>
+
 				<section data-transition="fade">
 					<h1 class="title--medium">Synthesizing, manipulating,
 					and controlling audio.</h1>
 				</section>
+
 				<section data-transition="fade">
 					<h1 class="title">Audio = Math</h1>
 				</section>
+
 				<section data-transition="fade">
 					<h1 class="title--small">A synthesizer in the browser.</h1>
 					<p>Synthesizer image</p>
 				</section>
+
 				<section data-transition="fade">
 					<h1 class="title">AudioContext</h1>
 					<pre class="fragment"><code class="js" data-trim>
@@ -29,6 +34,7 @@
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 					</code></pre>
 				</section>
+
 				<section data-autoslide="1000" data-transition="fade">
 					<h1 class="title--medium">Browser Support</h1>
 					<div class="fragment">
@@ -56,11 +62,14 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 						</ul>
 					</div>
 				</section>
+
 				<section data-transition="fade">
 					<h1 class="title--medium">Connecting Nodes</h1>
 					<p>Guitar pedal image</p>
 				</section>
+
 				<section data-transition="fade">
+					<h1 class="title--medium">Routing Graph</h1>
 					<ul class="node-list">
 						<li class="node-list__item">
 							Source
@@ -84,6 +93,76 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 							Output
 						</li>
 					</ul>
+				</section>
+
+				<section data-transition="fade">
+					<section data-transition="fade">
+						<h1 class="title">Source Nodes</h1>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Media Element</h1>
+						<pre><code class="js" data-trim>
+// create web audio context
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// audio element as source
+const source = document.querySelector('audio');
+
+// create media element source nodes
+const mediaElementSource = audioCtx.createMediaElementSource(sourceElements.audio);
+
+// connect source nodes to output
+sources.audio.connect(audioCtx.destination);
+						</code></pre>
+						<a class="btn" href="/examples/sources/media-element.html" target="_blank">View Example</a>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Media Stream</h1>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Audio Buffer</h1>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Audio Buffer Decode</h1>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Oscillator</h1>
+					</section>
+				</section>
+
+				<section data-transition="fade">
+					<section data-transition="fade">
+						<h1 class="title">Processing Nodes</h1>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Gain</h1>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Delay</h1>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Biquad Filter</h1>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Wave Shaper</h1>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Convolver</h1>
+					</section>
+				</section>
+
+				<section data-transition="fade">
+					<h1 class="title">WebAudio IRL</h1>
 				</section>
 			</div>
 		</div>
