@@ -1,5 +1,59 @@
 @import 'normalize-scss/sass/normalize';
 @import 'reveal.js/css/reveal.scss';
-@import 'reveal.js/css/theme/source/white.scss';
+
+$orange: #f28832;
 
 @include normalize();
+
+@font-face {
+  font-family: Proxima;
+  font-weight: 400;
+  font-style: bold;
+  src: url('/slides/dist/fonts/proxima/ProximaNova_Bold.eot');
+  src: url('/slides/dist/fonts/proxima/ProximaNova_Bold.eot?#iefix') format('embedded-opentype'),
+  		url('/slides/dist/fonts/proxima/ProximaNova_Bold.woff') format('woff'),
+		url('/slides/dist/fonts/proxima/ProximaNova_Bold.ttf') format('truetype'),
+		url('/slides/dist/fonts/proxima/ProximaNova_Bold.svg#ProximaLight') format('svg');
+}
+
+@font-face {
+  font-family: Tisa;
+  font-weight: 200;
+  font-style: regular;
+  src: url('/slides/dist/fonts/tisa/tisapro-regular-webfont.eot');
+  src: url('/slides/dist/fonts/tisa/tisapro-regular-webfont.eot?#iefix') format('embedded-opentype'),
+  		url('/slides/dist/fonts/tisa/tisapro-regular-webfont.woff') format('woff'),
+		url('/slides/dist/fonts/tisa/tisapro-regular-webfont.ttf') format('truetype'),
+		url('/slides/dist/fonts/tisa/tisapro-regular-webfont.svg#ProximaLight') format('svg');
+}
+
+h1.title {
+	font-family: 'Proxima';
+	font-weight: 400;
+	font-size: 100px;
+	text-transform: uppercase;
+}
+
+.reveal .controls .navigate-right,
+.reveal .controls .navigate-right.enabled {
+	border-left-color: $orange;
+}
+
+.reveal .controls .navigate-up,
+.reveal .controls .navigate-up.enabled {
+	border-bottom-color: $orange;
+}
+
+.reveal .controls .navigate-down,
+.reveal .controls .navigate-down.enabled {
+	border-top-color: $orange;
+}
+
+.reveal .controls .navigate-left,
+.reveal .controls .navigate-left.enabled {
+	border-right-color: $orange;
+}
+
+.reveal .progress span {
+	background: $orange;
+}
