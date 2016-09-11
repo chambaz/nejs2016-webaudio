@@ -2,14 +2,41 @@
   "name": "nejs2016-webaudio",
   "version": "0.0.0",
   "description": "A collection of WebAudio examples for NEJS 2016",
-  "main": "index.js",
-  "scripts": {
-    "start": "http-server"
-  },
   "author": "Adam Chambers, @chambaz",
   "license": "MIT",
+  "main": "index.js",
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
+  },
+  "scripts": {
+    "start": "npm run watch:js & npm run watch:css & http-server",
+	"watch:js": "watchify slides/app.js -o slides/dist/app.js -dv",
+    "watch:css": "nodemon -e scss -x \"npm run build:css\"",
+    "build:js": "browserify slides/app.js -g uglifyify | uglifyjs -cm > slides/dist/app.js",
+    "build:css": "node-sass --include-path node_modules slides/app.scss slides/dist/app.css"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.9.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "nodemon": "^1.10.2",
+    "uglify-js": "^2.6.3",
+    "uglifyify": "^3.0.2",
+    "watchify": "^3.7.0"
+  },
   "dependencies": {
     "http-server": "^0.9.0",
-    "reveal.js": "^3.3.0"
+    "reveal.js": "^3.3.0",
+	"node-sass": "^3.8.0",
+	"normalize-scss": "^5.0.3"
   }
 }
