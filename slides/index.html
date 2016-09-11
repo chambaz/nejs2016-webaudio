@@ -15,7 +15,7 @@
 
 				<section data-transition="fade">
 					<h1 class="title--medium">Synthesizing, manipulating,
-					and controlling audio.</h1>
+					<br />and controlling audio.</h1>
 				</section>
 
 				<section data-transition="fade">
@@ -23,7 +23,7 @@
 				</section>
 
 				<section data-transition="fade">
-					<h1 class="title--small">A synthesizer in the browser.</h1>
+					<h1 class="title--medium">A synthesizer in the browser.</h1>
 					<p>Synthesizer image</p>
 				</section>
 
@@ -117,6 +117,7 @@ sources.audio.connect(audioCtx.destination);
 						</code></pre>
 						<a class="btn" href="/examples/sources/media-element.html" target="_blank">
 							View Example
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
 					</section>
 
@@ -139,78 +140,58 @@ navigator.mediaDevices.getUserMedia({
 						</code></pre>
 						<a class="btn" href="/examples/sources/media-stream.html" target="_blank">
 							View Example
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
 					</section>
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Audio Buffer</h1>
 						<pre><code class="js" data-trim>
-// create web audio context
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-// create two second, stereo audio buffer
+// create two second, stereo audio buffer and buffer source node
 const buffer = audioCtx.createBuffer(2, audioCtx.sampleRate * 2.0, audioCtx.sampleRate);
-
-// create buffer source node
 const bufferSource = audioCtx.createBufferSource();
 
-// get stereo channel data
-const channels = [
-	buffer.getChannelData(0),
-	buffer.getChannelData(1),
-];
-
-// fill each channel of the buffer with white noise
+// get stereo channel data and fill each channel of the buffer with white noise
+const channels = [buffer.getChannelData(0), buffer.getChannelData(1)];
 channels.forEach(channel => {
 	buffer.getChannelData(channel).forEach((val, key, arr) => {
 		arr[key] = Math.random() * 2 - 1;
 	});
-})
+});
 
-// set the source buffer
+// set the source buffer, connect buffer to output and start
 bufferSource.buffer = buffer;
-
-// connect buffer to output
 bufferSource.connect(audioCtx.destination);
-
-// start the source playing
 bufferSource.start(0);
 						</code></pre>
 						<a class="btn" href="/examples/sources/audio-buffer.html" target="_blank">
 							View Example
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
 					</section>
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Audio Buffer Decode</h1>
 						<pre><code class="js" data-trim>
-// create web audio context
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
 let bufferSource, buffer;
 
 // fetch mp3
 fetch('/assets/digitalsurgeons.mp3')
-
 // fetch as array buffer
-.then(response => {
-	return response.arrayBuffer();
-})
+.then(response => response.arrayBuffer())
 // decode audio data from array buffer
-.then(arrayBuffer => {
-	return audioCtx.decodeAudioData(arrayBuffer);
-})
+.then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
 // create new buffer, connect to output and play
-.then(arrayBuffer => {
-	buffer = decodedAudio;
+.then(decodedAudio => {
 	bufferSource = audioCtx.createBufferSource();
-	bufferSource.buffer = buffer;
+	bufferSource.buffer = decodedAudio;
 	bufferSource.connect(audioCtx.destination);
 	bufferSource.start(0);
 });
 						</code></pre>
 						<a class="btn" href="/examples/sources/audio-buffer-decode-audio.html" target="_blank">
 							View Example
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
 					</section>
 
@@ -220,31 +201,27 @@ fetch('/assets/digitalsurgeons.mp3')
 // create web audio context
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-const oscillators = {};
-
 // create sine wave oscillator, start and connect to output
-oscillators.sine = audioCtx.createOscillator();
-oscillators.sine.type = 'sine'
-oscillators.sine.frequency.value = 880;
-oscillators.sine.connect(audioCtx.destination);
-oscillators.sine.start();
+const sine = audioCtx.createOscillator();
+sine.type = 'sine'
+sine.frequency.value = 880;
+sine.connect(audioCtx.destination);
+sine.start();
 
 // create triangle wave oscillator, start and connect to output
-oscillators.triangle = audioCtx.createOscillator();
-oscillators.triangle.type = 'triangle'
-oscillators.triangle.frequency.value = 440;
-oscillators.triangle.connect(audioCtx.destination);
-oscillators.triangle.start();
-
-// create square wave oscillator, start and connect to output
-oscillators.square = audioCtx.createOscillator();
-oscillators.square.type = 'square'
-oscillators.square.frequency.value = 220;
-oscillators.square.connect(audioCtx.destination);
-oscillators.square.start();
+const triangle = audioCtx.createOscillator();
+triangle.type = 'triangle'
+triangle.frequency.value = 440;
+triangle.connect(audioCtx.destination);
+triangle.start();
 						</code></pre>
+						<a class="btn" href="/examples/processing/biquad-filter.html" target="_blank">
+							Wave Shapes
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
+						</a>
 						<a class="btn" href="/examples/sources/oscillator.html" target="_blank">
 							View Example
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
 					</section>
 				</section>
@@ -256,14 +233,77 @@ oscillators.square.start();
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Gain</h1>
+						<pre><code class="js" data-trim>
+// create oscillator
+const oscillator = audioCtx.createOscillator();
+
+// create gain
+const gainNode = audioCtx.createGain();
+gainNode.gain.value = .5;
+
+// connect oscillator to gain, connect gain to output
+oscillator.connect(gain);
+gain.connect(audioCtx.destination);
+
+oscillator.start();
+						</code></pre>
+						<a class="btn" href="/examples/processing/gain.html" target="_blank">
+							View Example
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
+						</a>
 					</section>
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Delay</h1>
+						<pre><code class="js" data-trim>
+// create buffer source and set decoded audio
+const bufferSource = audioCtx.createBufferSource();
+bufferSource.buffer = decodedAudio;
+
+// create delay node
+const delay = audioCtx.createDelay(5.0);
+
+// connect buffer source to output
+bufferSource.connect(audioCtx.destination);
+
+// connect buffer source to delay, connect delay to output
+bufferSource.connect(delay);
+delay.connect(audioCtx.destination);
+
+bufferSource.start();
+						</code></pre>
+						<a class="btn" href="/examples/processing/delay.html" target="_blank">
+							View Example
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
+						</a>
 					</section>
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Biquad Filter</h1>
+						<pre><code class="js" data-trim>
+// create media element source node from video element
+const videoSource = audioCtx.createMediaElementSource(video);
+
+// create biquad filter node
+const biquadFilter = audioCtx.createBiquadFilter();
+
+// set biquad filter values
+biquadFilter.type = "bandpass";
+biquadFilter.frequency.value = 500;
+biquadFilter.Q.value = 5;
+
+// connect video source to biquad filter, connect biquad filter to output
+videoSource.connect(biquadFilter);
+biquadFilter.connect(audioCtx.destination);
+						</code></pre>
+						<a class="btn" href="/examples/processing/biquad-filter.html" target="_blank">
+							Filter Types
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
+						</a>
+						<a class="btn" href="/examples/processing/biquad-filter.html" target="_blank">
+							View Example
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
+						</a>
 					</section>
 
 					<section data-transition="fade">
