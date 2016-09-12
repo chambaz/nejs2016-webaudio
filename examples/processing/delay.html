@@ -65,11 +65,11 @@
 			let bufferSource;
 
 			// fetch mp3
-			fetch('/assets/digitalsurgeons.mp3')
+			fetch('/assets/nejs.ogg')
 
 			// fetch as array buffer
 			.then(response => response.arrayBuffer())
-			
+
 			// decode audio data from array buffer
 			.then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
 			.then(decodedAudio => {
@@ -88,6 +88,7 @@
 					// create new buffer, connect to output and play
 					bufferSource = audioCtx.createBufferSource();
 					bufferSource.buffer = decodedAudio;
+					bufferSource.loop = true;
 
 					bufferSource.connect(audioCtx.destination);
 					bufferSource.connect(delay);

@@ -110,10 +110,10 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const source = document.querySelector('audio');
 
 // create media element source nodes
-const mediaElementSource = audioCtx.createMediaElementSource(sourceElements.audio);
+const mediaElementSource = audioCtx.createMediaElementSource(sourceElement);
 
 // connect source nodes to output
-sources.audio.connect(audioCtx.destination);
+mediaElementSource.connect(audioCtx.destination);
 						</code></pre>
 						<a class="btn" href="/examples/sources/media-element.html" target="_blank">
 							View Example
@@ -347,7 +347,7 @@ function makeDistortionCurve(amount) {
 							StackOverflow
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
-						<a class="btn" href="/examples/processing/biquad-filter.html" target="_blank">
+						<a class="btn" href="/examples/processing/wave-shaper.html" target="_blank">
 							View Example
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
@@ -356,23 +356,27 @@ function makeDistortionCurve(amount) {
 					<section data-transition="fade">
 						<h1 class="title--medium">Convolver</h1>
 						<pre><code class="js" data-trim>
-// fetch impulse mp3
-fetch('/assets/impulse.mp3')
-.then(response => response.arrayBuffer())
-.then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
-.then(decodedAudio => {
-	// set convolver buffer to decoded impulse
-	convolver.buffer = decodedAudio;
+// create audio / impulse sources
+const impulseBufferSource = audioCtx.createBufferSource();
+const audioBufferSource = audioCtx.createBufferSource();
+impulseBufferSource.buffer = decodedImpulse;
+audioBufferSource.buffer = decodedAudio;
 
-	// connect audio source directly to output
-	audioSource.connect(audioCtx.destination);
+// create convolver node and set impulse buffer
+const convolver = audioCtx.createConvolver();
+convolver.buffer = decodedImpulse;
 
-	// connect source to convolver gain, convolver gain to convolver, convolver to output
-	audioSource.connect(convolverGain);
-	convolverGain.connect(convolver);
-	convolver.connect(audioCtx.destination);
-});
+// connect audio source directly to output
+audioSource.connect(audioCtx.destination);
+
+// connect source to convolver, convolver to output
+audioSource.connect(convolver);
+convolver.connect(audioCtx.destination);
 						</code></pre>
+						<a class="btn" href="/assets/impulse.mp3" target="_blank">
+							Hear impulse
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
+						</a>
 						<a class="btn" href="/examples/processing/biquad-filter.html" target="_blank">
 							View Example
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
