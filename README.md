@@ -26,9 +26,7 @@ A collection of WebAudio examples for NEJS 2016
 	- [Biquad Filter](examples/processing/biquad-filter.html)
 	- [Wave Shaper](examples/processing/wave-shaper.html)
 	- [Convolver](examples/processing/convolver.html)
-- *Specialized*
-	- [Analyzer](examples/specialized/analyzer.html)
-	- [Spatialization](examples/specialized/spatialization.html)
+- [Analyzer](examples/specialized/analyzer.html)
 
 **Demos**
 
