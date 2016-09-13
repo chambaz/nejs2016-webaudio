@@ -33,6 +33,20 @@ $red: #c0392b;
 		url('/slides/dist/fonts/tisa/tisapro-regular-webfont.svg#ProximaLight') format('svg');
 }
 
+@keyframes emphasis {
+	0% {
+		color: $black;
+	}
+
+	50% {
+		color: $orange;
+	}
+
+	100% {
+		color: $black;
+	}
+}
+
 .reveal {
 
 	.controls .navigate-right,
@@ -137,8 +151,9 @@ $red: #c0392b;
 	}
 
 	h1 .title__emphasis {
-		color: $orange;
+		color: $black;
 		font-weight: normal;
+		animation: emphasis 2s;
 	}
 
 	.support-list {
@@ -196,5 +211,10 @@ $red: #c0392b;
 	.img {
 		max-width: 60%;
 		margin: 40px 0;
+	}
+
+	.img--small {
+		max-width: 60%;
+		margin: 10px 0;
 	}
 }

@@ -22,8 +22,10 @@
 				</section>
 
 				<section data-transition="fade">
-					<h1 class="title--medium">Synthesizing, manipulating,
-					<br />and controlling audio.</h1>
+					<h1 class="title--medium">
+						<strong class="title__emphasis" style="animation-delay: .5s;">Synthesizing</strong>,
+						<strong class="title__emphasis" style="animation-delay: 2s;">manipulating</strong>,
+					<br />and <strong class="title__emphasis" style="animation-delay: 3.5s;">controlling</strong> audio.</h1>
 				</section>
 
 				<section data-transition="fade">
@@ -108,6 +110,11 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Media Element</h1>
+						<img class="img--small" src="/slides/img/mediaelement.jpg" />
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Media Element</h1>
 						<pre><code class="js" data-trim>
 // create web audio context
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -125,6 +132,11 @@ mediaElementSource.connect(audioCtx.destination);
 							View Example
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Media Stream</h1>
+						<img class="img--small" src="/slides/img/webrtc.jpg" />
 					</section>
 
 					<section data-transition="fade">
@@ -148,6 +160,11 @@ navigator.mediaDevices.getUserMedia({
 							View Example
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Audio Buffer</h1>
+						<img class="img--small" src="/slides/img/array.jpg" />
 					</section>
 
 					<section data-transition="fade">
@@ -177,6 +194,11 @@ bufferSource.start(0);
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Audio Buffer Decode</h1>
+						<img class="img--small" src="/slides/img/mp3decode.jpg" />
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Audio Buffer Decode</h1>
 						<pre><code class="js" data-trim>
 let bufferSource, buffer;
 
@@ -198,6 +220,11 @@ fetch('/assets/digitalsurgeons.mp3')
 							View Example
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Oscillator</h1>
+						<img class="img--small" src="/slides/img/sine.jpg" />
 					</section>
 
 					<section data-transition="fade">
@@ -238,6 +265,12 @@ triangle.start();
 
 					<section data-transition="fade">
 						<h1 class="title">Functional<br />JavaScript</h1>
+						<img class="img--small" src="/slides/img/lambda.jpg" />
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Gain</h1>
+						<img class="img--small" src="/slides/img/gain.jpg" />
 					</section>
 
 					<section data-transition="fade">
@@ -271,6 +304,11 @@ arr.map(val => val * .5);
 
 					<section data-transition="fade">
 						<h1 class="title--medium">Delay</h1>
+						<img class="img--small" src="/slides/img/delay.jpg" />
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Delay</h1>
 						<pre><code class="js" data-trim>
 // create buffer source and set decoded audio
 const bufferSource = audioCtx.createBufferSource();
@@ -293,6 +331,11 @@ bufferSource.start();
 							View Example
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Biquad Filter</h1>
+						<img class="img--small" src="/slides/img/filter.jpg" />
 					</section>
 
 					<section data-transition="fade">
@@ -321,6 +364,11 @@ biquadFilter.connect(audioCtx.destination);
 							View Example
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Wave Shaper</h1>
+						<img class="img--small" src="/slides/img/distortion.jpg" />
 					</section>
 
 					<section data-transition="fade">
@@ -368,6 +416,11 @@ function makeDistortionCurve(amount) {
 							View Example
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Convolver</h1>
+						<img class="img--small" src="/slides/img/reverb.jpg" />
 					</section>
 
 					<section data-transition="fade">
