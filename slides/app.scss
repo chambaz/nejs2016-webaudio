@@ -65,6 +65,37 @@ $red: #c0392b;
 		overflow: -moz-scrollbars-none;
 	}
 
+	.logo {
+		position: absolute;
+	}
+
+	.logo--stamford {
+		@extend .logo;
+		left: 18px;
+		top: 13px;
+		width: 80px;
+	}
+
+	.logo--pitney {
+		@extend .logo;
+		top: 24px;
+		width: 150px;
+		right: 15px;
+	}
+
+	.label {
+		font-family: 'Proxima';
+		font-size: 18px;
+		position: absolute;
+		bottom: 15px;
+		left: 20px;
+	}
+
+	.label__link {
+		text-decoration: none;
+		color: $orange;
+	}
+
 	code {
 		font-size: 18px;
 		line-height: 1.5;
@@ -103,6 +134,11 @@ $red: #c0392b;
 	h1.title--small {
 		@extend h1.title;
 		font-size: 40px;
+	}
+
+	h1 .title__emphasis {
+		color: $orange;
+		font-weight: normal;
 	}
 
 	.support-list {
@@ -155,5 +191,10 @@ $red: #c0392b;
 	.node-list__arrow {
 		display: flex;
 		font-size: 30px;
+	}
+
+	.img {
+		max-width: 60%;
+		margin: 40px 0;
 	}
 }

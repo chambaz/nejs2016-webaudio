@@ -52,16 +52,8 @@
 				}
 
 				// fill each channel of the buffer with white noise
-				const channels = [
-					buffer.getChannelData(0),
-					buffer.getChannelData(1),
-				];
-
-				channels.forEach(channel => {
-					buffer.getChannelData(channel).forEach((val, key, arr) => {
-						arr[key] = Math.random() * 2 - 1;
-					});
-				})
+				buffer.getChannelData(0).forEach(randomSample);
+				buffer.getChannelData(1).forEach(randomSample);
 
 				// Get an AudioBufferSourceNode.
 				// This is the AudioNode to use when we want to play an AudioBuffer
@@ -84,6 +76,11 @@
 				bufferSource.stop(0);
 				bufferSource = false;
 			});
+
+			// return random number between -1 and 1
+			function randomSample(val, key, arr) {
+				return arr[key] = Math.random() * 2 - 1;
+			}
 
 			console.log(audioCtx);
 			console.log(buffer);

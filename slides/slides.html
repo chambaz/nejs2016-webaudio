@@ -7,6 +7,14 @@
 	<body>
 
 		<div class="reveal">
+			<img class="logo--stamford" src="/slides/img/stamford.jpg" />
+			<img class="logo--pitney" src="/slides/img/pitneybowes.jpg" />
+			<p class="label">
+				North East JavaScript Conference
+
+				/ <a class="label__link" href="/hashtag/NEJSConference">#NEJSConference</a>
+			</p>
+
 			<div class="slides">
 
 				<section data-transition="fade">
@@ -24,48 +32,12 @@
 
 				<section data-transition="fade">
 					<h1 class="title--medium">A synthesizer in the browser.</h1>
-					<p>Synthesizer image</p>
-				</section>
-
-				<section data-transition="fade">
-					<h1 class="title">AudioContext</h1>
-					<pre class="fragment"><code class="js" data-trim>
-// create web audio context
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-					</code></pre>
-				</section>
-
-				<section data-autoslide="1000" data-transition="fade">
-					<h1 class="title--medium">Browser Support</h1>
-					<div class="fragment">
-						<ul class="support-list">
-							<li class="support-list__item">
-								<i class="fa fa-chrome" aria-hidden="true"></i>
-								<i class="support-list__icon--supported fa fa-check" aria-hidden="true"></i>
-							</li>
-							<li class="support-list__item">
-								<i class="fa fa-firefox" aria-hidden="true"></i>
-								<i class="support-list__icon--supported fa fa-check" aria-hidden="true"></i>
-							</li>
-							<li class="support-list__item">
-								<i class="fa fa-safari" aria-hidden="true"></i>
-								<i class="support-list__icon--half-supported fa fa-check" aria-hidden="true"></i>
-							</li>
-							<li class="support-list__item">
-								<i class="fa fa-edge" aria-hidden="true"></i>
-								<i class="support-list__icon--supported fa fa-check" aria-hidden="true"></i>
-							</li>
-							<li class="support-list__item">
-								<i class="fa fa-internet-explorer" aria-hidden="true"></i>
-								<i class="support-list__icon--not-supported fa fa-times" aria-hidden="true"></i>
-							</li>
-						</ul>
-					</div>
+					<img class="img" src="/slides/img/bobmoog.jpg" />
 				</section>
 
 				<section data-transition="fade">
 					<h1 class="title--medium">Connecting Nodes</h1>
-					<p>Guitar pedal image</p>
+					<img class="img" src="/slides/img/pedalboard.jpg" />
 				</section>
 
 				<section data-transition="fade">
@@ -91,6 +63,40 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 						</li>
 						<li class="node-list__item">
 							Output
+						</li>
+					</ul>
+				</section>
+
+				<section data-transition="fade">
+					<h1 class="title">AudioContext</h1>
+					<pre class="fragment"><code class="js" data-trim>
+// create web audio context
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+					</code></pre>
+				</section>
+
+				<section data-transition="fade">
+					<h1 class="title--medium">Browser Support</h1>
+					<ul class="support-list">
+						<li class="support-list__item">
+							<i class="fa fa-chrome" aria-hidden="true"></i>
+							<i class="support-list__icon--supported fa fa-check" aria-hidden="true"></i>
+						</li>
+						<li class="support-list__item">
+							<i class="fa fa-firefox" aria-hidden="true"></i>
+							<i class="support-list__icon--supported fa fa-check" aria-hidden="true"></i>
+						</li>
+						<li class="support-list__item">
+							<i class="fa fa-safari" aria-hidden="true"></i>
+							<i class="support-list__icon--half-supported fa fa-check" aria-hidden="true"></i>
+						</li>
+						<li class="support-list__item">
+							<i class="fa fa-edge" aria-hidden="true"></i>
+							<i class="support-list__icon--supported fa fa-check" aria-hidden="true"></i>
+						</li>
+						<li class="support-list__item">
+							<i class="fa fa-internet-explorer" aria-hidden="true"></i>
+							<i class="support-list__icon--not-supported fa fa-times" aria-hidden="true"></i>
 						</li>
 					</ul>
 				</section>
@@ -147,17 +153,16 @@ navigator.mediaDevices.getUserMedia({
 					<section data-transition="fade">
 						<h1 class="title--medium">Audio Buffer</h1>
 						<pre><code class="js" data-trim>
-// create two second, stereo audio buffer and buffer source node
+// create buffer source node and two second stereo audio buffer
 const buffer = audioCtx.createBuffer(2, audioCtx.sampleRate * 2.0, audioCtx.sampleRate);
 const bufferSource = audioCtx.createBufferSource();
 
-// get stereo channel data and fill each channel of the buffer with white noise
-const channels = [buffer.getChannelData(0), buffer.getChannelData(1)];
-channels.forEach(channel => {
-	buffer.getChannelData(channel).forEach((val, key, arr) => {
-		arr[key] = Math.random() * 2 - 1;
-	});
-});
+// fill each channel of the buffer with white noise
+buffer.getChannelData(0).forEach(randomSample);
+buffer.getChannelData(1).forEach(randomSample);
+
+// randomize array value, random number between -1 and 1
+function randomSample(val, key, arr) { return arr[key] = Math.random() * 2 - 1; }
 
 // set the source buffer, connect buffer to output and start
 bufferSource.buffer = buffer;
@@ -232,8 +237,13 @@ triangle.start();
 					</section>
 
 					<section data-transition="fade">
+						<h1 class="title">Functional<br />JavaScript</h1>
+					</section>
+
+					<section data-transition="fade">
 						<h1 class="title--medium">Gain</h1>
-						<pre><code class="js" data-trim>
+						<div>
+							<pre><code class="js" data-trim>
 // create oscillator
 const oscillator = audioCtx.createOscillator();
 
@@ -246,7 +256,13 @@ oscillator.connect(gain);
 gain.connect(audioCtx.destination);
 
 oscillator.start();
-						</code></pre>
+							</code></pre>
+						</div>
+						<div class="fragment">
+							<pre><code class="js" data-trim>
+arr.map(val => val * .5);
+							</code></pre>
+						</div>
 						<a class="btn" href="/examples/processing/gain.html" target="_blank">
 							View Example
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
@@ -260,8 +276,9 @@ oscillator.start();
 const bufferSource = audioCtx.createBufferSource();
 bufferSource.buffer = decodedAudio;
 
-// create delay node
-const delay = audioCtx.createDelay(5.0);
+// create 1s delay node
+const delay = audioCtx.createDelay();
+delay.delayTime.value = 1;
 
 // connect buffer source to output
 bufferSource.connect(audioCtx.destination);
@@ -296,7 +313,7 @@ biquadFilter.Q.value = 5;
 videoSource.connect(biquadFilter);
 biquadFilter.connect(audioCtx.destination);
 						</code></pre>
-						<a class="btn" href="/examples/processing/biquad-filter.html" target="_blank">
+						<a class="btn" href="/slides/img/filters.jpg" target="_blank">
 							Filter Types
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
