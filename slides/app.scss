@@ -217,4 +217,29 @@ $red: #c0392b;
 		max-width: 60%;
 		margin: 10px 0;
 	}
+
+	.info-list {
+		font-family: 'Tisa';
+		font-size: 24px;
+		margin: 40px 0;
+	}
+
+	.info-list__item {
+		display: block;
+		padding: 20px 0;
+	}
+
+	.info-list--small {
+		@extend .info-list;
+		font-size: 20px;
+
+		.info-list__item {
+			padding: 10px 0;
+		}
+	}
+
+	.info-list__link {
+		color: $orange;
+		text-decoration: none;
+	}
 }
