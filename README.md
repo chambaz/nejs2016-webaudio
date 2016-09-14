@@ -7,7 +7,7 @@ A collection of WebAudio examples for [NEJS 2016](http://www.northeastjsconferen
 	$ npm install
 	$ npm start
 
-**Start**: [http://localhost:8080](http://localhost:8080)
+**Start**: [http://localhost:8080](http://localhost:8080) (Firefox is [recommended](https://developer.mozilla.org/en-US/docs/Tools/Web_Audio_Editor))
 
 **Slides**: [http://localhost:8080/slides](http://localhost:8080/slides)
 
