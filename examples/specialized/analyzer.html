@@ -13,18 +13,19 @@
 
 		.vis {
 			background: #222;
-			width: 340px;
-			height: 147px;
+			width: 680px;
+			height: 190px;
 			margin-bottom: 40px;
-			padding: 20px 20px 0;
+			padding: 20px 0 0;
 			display: flex;
 			align-items: flex-end;
 		}
 
 		.vis__bar {
-			width: 6.25%;
+			transition: .1s;
+			width: 5%;
 			height: 0;
-			background: #fff;
+			background: #777;
 		}
 
 		.vis__bar--max {
@@ -41,7 +42,7 @@
 			background: #ddd;
 			box-sizing: border-box;
 			display: block;
-			font-size: 17px;
+			font-size: 14px;
 			margin: 20px 0 20px 20px;
 			padding: 20px;
 			width: 640px;
@@ -51,22 +52,30 @@
 	<body>
 
 		<div class="vis">
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
-			<span class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
+			<span data-vis-bar class="vis__bar"></span>
 		</div>
 
 		<div class="main">
@@ -90,6 +99,8 @@
 			const ui = {
 				video: document.querySelector('[data-video-source]'),
 				analysis: document.querySelector('[data-analysis]'),
+				vis: document.querySelector('[data-vis]'),
+				visBars: document.querySelectorAll('[data-vis-bar]'),
 			};
 
 			// create media element source node
@@ -98,7 +109,7 @@
 			// create analyzer node
 			const analyser = audioCtx.createAnalyser();
 			// set size of fast fourier transform
-			analyser.fftSize = 32;
+			analyser.fftSize = 64;
 
 			// construct Uint8Array for analysis data
 			const bufferLength = analyser.frequencyBinCount;
@@ -111,11 +122,25 @@
 
 			// call analyze function at 60fps
 			function analyze() {
+				const middleSection = Uint8Array.from(dataArray);
+
 				// get frequency data of audio at this point in time
 				analyser.getByteFrequencyData(dataArray);
 
+				dataArray.forEach((val, index) => {
+					if (!ui.visBars[index]) { return; }
+
+					ui.visBars[index].style.height = `${val / 1.5}px`;
+
+					if (val > 200) {
+						ui.visBars[index].classList.add('vis__bar--max');
+					} else {
+						ui.visBars[index].classList.remove('vis__bar--max');
+					}
+				});
+
 				// update analaysis in DOM, prettify JSON
-				ui.analysis.innerHTML = JSON.stringify(dataArray)
+				ui.analysis.innerHTML = JSON.stringify(middleSection.slice(8, 24))
 											.replace(/{/, '{\r\n  ')
 											.replace(/,"/g, ',\r\n  "')
 											.replace(/}/, '\r\n}');
