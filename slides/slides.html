@@ -10,7 +10,7 @@
 			<img class="logo--stamford" src="/slides/img/stamford.jpg" />
 			<img class="logo--pitney" src="/slides/img/pitneybowes.jpg" />
 			<p class="label">
-				North East JavaScript Conference
+				Northeast JavaScript Conference
 
 				/ <a class="label__link" href="/hashtag/NEJSConference">#NEJSConference</a>
 			</p>
@@ -120,7 +120,7 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 // audio element as source
-const source = document.querySelector('audio');
+const sourceElement = document.querySelector('audio');
 
 // create media element source nodes
 const mediaElementSource = audioCtx.createMediaElementSource(sourceElement);
@@ -247,7 +247,7 @@ triangle.frequency.value = 440;
 triangle.connect(audioCtx.destination);
 triangle.start();
 						</code></pre>
-						<a class="btn" href="/examples/processing/biquad-filter.html" target="_blank">
+						<a class="btn" href="/slides/img/waves.png" target="_blank">
 							Wave Shapes
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
@@ -427,9 +427,7 @@ function makeDistortionCurve(amount) {
 						<h1 class="title--medium">Convolver</h1>
 						<pre><code class="js" data-trim>
 // create audio / impulse sources
-const impulseBufferSource = audioCtx.createBufferSource();
 const audioBufferSource = audioCtx.createBufferSource();
-impulseBufferSource.buffer = decodedImpulse;
 audioBufferSource.buffer = decodedAudio;
 
 // create convolver node and set impulse buffer
@@ -447,7 +445,41 @@ convolver.connect(audioCtx.destination);
 							Hear impulse
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
-						<a class="btn" href="/examples/processing/biquad-filter.html" target="_blank">
+						<a class="btn" href="/examples/processing/convolver.html" target="_blank">
+							View Example
+							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
+						</a>
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Analyzer</h1>
+						<img class="img--small" src="/slides/img/wave.jpg" />
+					</section>
+
+					<section data-transition="fade">
+						<h1 class="title--medium">Analyzer</h1>
+						<pre><code class="js" data-trim>
+// create analyzer node with FFT of 32
+const analyser = audioCtx.createAnalyser();
+analyser.fftSize = 32;
+
+// construct Uint8Array for analysis data
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+// connect video source to analyzer, connect analyzer to output
+videoSource.connect(analyser);
+analyser.connect(audioCtx.destination);
+
+// recursively call analyze function at 60fps
+function analyze() {
+	// get frequency data of audio at this point in time
+	analyser.getByteFrequencyData(dataArray);
+	requestAnimationFrame(analyze);
+}
+requestAnimationFrame(analyze);
+						</code></pre>
+						<a class="btn" href="/examples/specialized/analyzer.html" target="_blank">
 							View Example
 							<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 						</a>
@@ -462,7 +494,7 @@ convolver.connect(audioCtx.destination);
 					<h1 class="title">Game Design</h1>
 					<ul class="info-list">
 						<li class="info-list__item fragment">Fine-grained control over sample playback</li>
-						<li class="info-list__item fragment">Dynamically manipuate samples relative to game play</li>
+						<li class="info-list__item fragment">Dynamically manipuate audio relative to game play</li>
 						<li class="info-list__item fragment">Synthesize for dynamic control over tones relative to game play</li>
 					</ul>
 					<a class="btn fragment" href="/examples/demos/game-design.html" target="_blank">
@@ -478,7 +510,7 @@ convolver.connect(audioCtx.destination);
 						<li class="info-list__item fragment">Visual feedback of audio input in UI design</li>
 						<li class="info-list__item fragment">Dynamic art generated / manipulated by an audio source</li>
 					</ul>
-					<a class="btn" href="/examples/demos/audio-visualization.html" target="_blank">
+					<a class="btn fragment" href="/examples/demos/audio-visualization.html" target="_blank">
 						View Example
 						<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 					</a>
@@ -491,7 +523,7 @@ convolver.connect(audioCtx.destination);
 						<li class="info-list__item fragment">Manipulate audio based on user interaction or inactvity</li>
 						<li class="info-list__item fragment">Synthesize for dynamic control over tones and reduced payload</li>
 					</ul>
-					<a class="btn" href="/examples/demos/audio-visualization.html" target="_blank">
+					<a class="btn fragment" href="/examples/demos/audio-visualization.html" target="_blank">
 						View Example
 						<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 					</a>
@@ -504,7 +536,7 @@ convolver.connect(audioCtx.destination);
 						<li class="info-list__item fragment">Interactive music videos and collaborative compositions</li>
 						<li class="info-list__item fragment">Interactive installations and experiences driven by the open web</li>
 					</ul>
-					<a class="btn" href="/examples/demos/audio-visualization.html" target="_blank">
+					<a class="fragment btn" href="http://flymusic.co" target="_blank">
 						View Example
 						<i class="btn__icon fa fa-external-link" aria-hidden="true"></i>
 					</a>
@@ -520,6 +552,12 @@ convolver.connect(audioCtx.destination);
 						<li class="info-list__item">
 							AudioCrawl -
 							<a class="info-list__link" href="http://audiocrawl.co">audiocrawl.co</a>
+						</li>
+						<li class="info-list__item">
+							<i class="info-list__icon fa fa-github" aria-hidden="true"></i>
+							<a class="info-list__link" href="http://github.com/chambaz/nejs2016-webaudio">
+								chambaz/nejs2016-webaudio
+							</a>
 						</li>
 					</ul>
 					<p>

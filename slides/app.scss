@@ -242,4 +242,9 @@ $red: #c0392b;
 		color: $orange;
 		text-decoration: none;
 	}
+
+	.info-list__icon {
+		margin-right: 7px;
+		transform: translateY(1px);
+	}
 }
