@@ -459,9 +459,9 @@ convolver.connect(audioCtx.destination);
 					<section data-transition="fade">
 						<h1 class="title--medium">Analyzer</h1>
 						<pre><code class="js" data-trim>
-// create analyzer node with FFT of 32
+// create analyzer node with FFT size of 64
 const analyser = audioCtx.createAnalyser();
-analyser.fftSize = 32;
+analyser.fftSize = 64;
 
 // construct Uint8Array for analysis data
 const bufferLength = analyser.frequencyBinCount;

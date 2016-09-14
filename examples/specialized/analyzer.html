@@ -12,13 +12,13 @@
 		}
 
 		.vis {
+			align-items: flex-end;
 			background: #222;
-			width: 680px;
+			display: none;
 			height: 190px;
 			margin-bottom: 40px;
 			padding: 20px 0 0;
-			display: flex;
-			align-items: flex-end;
+			width: 680px;
 		}
 
 		.vis__bar {
@@ -47,11 +47,16 @@
 			padding: 20px;
 			width: 640px;
 		}
+
+		button {
+			font-size: 24px;
+			margin: 20px 10px 0;
+		}
 		</style>
 	</head>
 	<body>
 
-		<div class="vis">
+		<div data-vis class="vis">
 			<span data-vis-bar class="vis__bar"></span>
 			<span data-vis-bar class="vis__bar"></span>
 			<span data-vis-bar class="vis__bar"></span>
@@ -91,6 +96,8 @@
 			</div>
 		</div>
 
+		<button data-show-vis>Show visualization</button>
+
 		<script>
 			// create web audio context
 			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -101,6 +108,7 @@
 				analysis: document.querySelector('[data-analysis]'),
 				vis: document.querySelector('[data-vis]'),
 				visBars: document.querySelectorAll('[data-vis-bar]'),
+				visBtn: document.querySelector('[data-show-vis]'),
 			};
 
 			// create media element source node
@@ -120,6 +128,17 @@
 			videoSource.connect(analyser);
 			analyser.connect(audioCtx.destination);
 
+			// toggle visualisation display
+			ui.visBtn.addEventListener('click', e => {
+				if (ui.vis.style.display === 'flex') {
+					ui.vis.style.display = 'none';
+					ui.visBtn.innerHTML = 'Show visualization';
+				} else {
+					ui.vis.style.display = 'flex';
+					ui.visBtn.innerHTML = 'Hide visualization';
+				}
+			});
+
 			// call analyze function at 60fps
 			function analyze() {
 				const middleSection = Uint8Array.from(dataArray);
@@ -127,11 +146,16 @@
 				// get frequency data of audio at this point in time
 				analyser.getByteFrequencyData(dataArray);
 
+				// update height of each visualization bar
 				dataArray.forEach((val, index) => {
-					if (!ui.visBars[index]) { return; }
+					// only using first 24 as audio not hitting top end of spectrum
+					if (!ui.visBars[index]) {
+						return;
+					}
 
 					ui.visBars[index].style.height = `${val / 1.5}px`;
 
+					// add orange cap to par if peaking
 					if (val > 200) {
 						ui.visBars[index].classList.add('vis__bar--max');
 					} else {
