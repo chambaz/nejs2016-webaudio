@@ -6,7 +6,34 @@
 		body {
 			align-items: center;
 			display: flex;
+			flex-direction: column;
 			height: 100%;
+			justify-content: center;
+		}
+
+		.vis {
+			background: #222;
+			width: 340px;
+			height: 147px;
+			margin-bottom: 40px;
+			padding: 20px 20px 0;
+			display: flex;
+			align-items: flex-end;
+		}
+
+		.vis__bar {
+			width: 6.25%;
+			height: 0;
+			background: #fff;
+		}
+
+		.vis__bar--max {
+			border-top: solid 10px #f28832;
+		}
+
+		.main {
+			align-items: center;
+			display: flex;
 			justify-content: center;
 		}
 
@@ -23,14 +50,37 @@
 	</head>
 	<body>
 
-		<div>
-			<video
-				src="/assets/digitalsurgeons.mp4"
-				controls
-				data-video-source>
-			</video>
+		<div class="vis">
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
+			<span class="vis__bar"></span>
 		</div>
-		<div><pre><code data-analysis></code></pre></div>
+
+		<div class="main">
+			<div class="main__block">
+				<video
+					src="/assets/digitalsurgeons.mp4"
+					controls
+					data-video-source>
+				</video>
+			</div>
+			<div class="main__block">
+				<pre><code data-analysis></code></pre>
+			</div>
+		</div>
 
 		<script>
 			// create web audio context

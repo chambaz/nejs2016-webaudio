@@ -6,8 +6,18 @@
 		body {
 			align-items: center;
 			display: flex;
+			flex-direction: column;
 			height: 100%;
 			justify-content: center;
+		}
+
+		.video {
+			width: 500px;
+			margin-bottom: 40px;
+		}
+
+		.buttons {
+			display: flex;
 		}
 
 		button {
@@ -18,8 +28,12 @@
 	</head>
 	<body>
 
-		<button data-stream-on>Stream on</button>
-		<button data-stream-off>Stream off</button>
+		<video data-webcam class="video"></video>
+
+		<div class="buttons">
+			<button data-stream-on>Stream on</button>
+			<button data-stream-off>Stream off</button>
+		</div>
 
 		<script>
 			// create web audio context
@@ -29,16 +43,22 @@
 			const ui = {
 				streamOn: document.querySelector('[data-stream-on]'),
 				streamOff: document.querySelector('[data-stream-off]'),
+				webcam: document.querySelector('[data-webcam]'),
 			};
 
 			let mediaStream;
 
 			// get user microphone
 			navigator.mediaDevices.getUserMedia({
+				video: true,
 				audio: true,
 			}).then(stream => {
 				// create media stream from mic input and connect to output
 				mediaStream = audioCtx.createMediaStreamSource(stream);
+
+				// hook up webcam video
+				ui.webcam.autoplay = true;
+				ui.webcam.src = window.URL.createObjectURL(stream);
 
 				// connect media stream to output
 				ui.streamOn.addEventListener('click', e => {
