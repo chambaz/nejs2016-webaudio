@@ -1,6 +1,6 @@
 # 🤘 NEJS 2016 - WebAudio 🤘
 
-A collection of WebAudio examples for NEJS 2016
+A collection of WebAudio examples for [NEJS 2016](http://www.northeastjsconference.com/)
 
 **Get Started**
 
