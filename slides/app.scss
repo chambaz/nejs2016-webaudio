@@ -92,6 +92,7 @@ $red: #c0392b;
 
 	.logo--pitney {
 		@extend .logo;
+		transition: .3s;
 		top: 24px;
 		width: 150px;
 		right: 15px;
