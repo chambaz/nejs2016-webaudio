@@ -135,11 +135,26 @@ $red: #c0392b;
 		background: $orange;
 		color: $white;
 		text-decoration: none;
+		transition: .3s;
+
+		&:hover {
+			transform: scale(1.05);
+		}
 	}
 
-	.btn--blue {
+	.btn--audiocrawl {
 		@extend .btn;
-		background: #3e8aac;
+		background: #5b5d5d;
+		height: 47px;
+		line-height: 39px;
+		padding: 10px 20px 0 80px;
+	}
+
+	.btn__icon-img {
+		left: 10px;
+		position: absolute;
+		top: 2px;
+		width: 60px;
 	}
 
 	.btn__icon {
