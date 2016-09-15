@@ -97,7 +97,7 @@ $red: #c0392b;
 		right: 75px;
 	}
 
-	.logo--pitney1 {
+	.logo--pitney-icon {
 		@extend .logo;
 		transition: .3s;
 		top: 24px;
@@ -135,6 +135,11 @@ $red: #c0392b;
 		background: $orange;
 		color: $white;
 		text-decoration: none;
+	}
+
+	.btn--blue {
+		@extend .btn;
+		background: #3e8aac;
 	}
 
 	.btn__icon {

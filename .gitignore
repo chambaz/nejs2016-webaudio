@@ -1,5 +1,5 @@
 .DS_Store
 node_modules
-npm-debug.log
+npm-debug.log*
 slides/dist/app.css
 slides/dist/app.js
