@@ -92,9 +92,16 @@ $red: #c0392b;
 
 	.logo--pitney {
 		@extend .logo;
+		top: 23px;
+		width: 150px;
+		right: 75px;
+	}
+
+	.logo--pitney1 {
+		@extend .logo;
 		transition: .3s;
 		top: 24px;
-		width: 150px;
+		width: 50px;
 		right: 15px;
 	}
 
@@ -154,6 +161,9 @@ $red: #c0392b;
 	h1 .title__emphasis {
 		color: $black;
 		font-weight: normal;
+	}
+
+	.present h1 .title__emphasis {
 		animation: emphasis 2s;
 	}
 

@@ -39,7 +39,7 @@ navigator.mediaDevices.getUserMedia({
 function analyze() {
 	// get frequency data of audio at this point in time
 	analyser.getByteFrequencyData(dataArray);
-	const scale = dataArray[10] / 50;
+	const scale = dataArray[10] / 60;
 
 	if (scale > 1) {
 		logo.style.transform = `scale(${scale})`;
