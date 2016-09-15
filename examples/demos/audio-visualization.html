@@ -145,15 +145,18 @@
 				if (config.playing) {
 					bufferSource.stop(0);
 					bufferSource.disconnect();
+					ui.start.innerHTML = 'Start';
 					config.playing = false;
 				} else {
 					// create new buffer and connect to analyser
 					// connect analyser to output and start buffer
 					bufferSource = audioCtx.createBufferSource();
 					bufferSource.buffer = decodedAudio;
+					bufferSource.loop = true;
 					bufferSource.start(0);
 					bufferSource.connect(gain);
 					requestAnimationFrame(analyze);
+					ui.start.innerHTML = 'Stop';
 					config.playing = true;
 				}
 
