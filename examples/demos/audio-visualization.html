@@ -92,7 +92,14 @@
 	</head>
 	<body>
 
-		<input data-gain class="range" type="range" />
+		<input
+			data-filter
+			class="range"
+			type="range"
+			min="0"
+			max="20000"
+			step="50"
+			value="0" />
 		<button data-start class="btn">Start</button>
 
 		<script>
@@ -106,9 +113,10 @@
 			playing: false,
 		};
 
+		// DOM nodes
 		const ui = {
 			start: document.querySelector('[data-start]'),
-			gain: document.querySelector('[data-gain]'),
+			filter: document.querySelector('[data-filter]'),
 		};
 
 		// create analyzer node
@@ -120,17 +128,22 @@
 		const bufferLength = analyser.frequencyBinCount;
 		const dataArray = new Uint8Array(bufferLength);
 
-		// create gain node
-		const gain = audioCtx.createGain();
-		gain.gain.value = .8;
+		// create biquad filter node
+		const biquadFilter = audioCtx.createBiquadFilter();
 
-		gain.connect(analyser);
+		// set biquad filter values
+		biquadFilter.type = "lowpass";
+		biquadFilter.frequency.value = ui.filter.value;
+		biquadFilter.Q.value = 10;
+
+		// filter to analyser, analyser to output
+		biquadFilter.connect(analyser);
 		analyser.connect(audioCtx.destination);
 
 		let bufferSource;
 
 		// fetch mp3
-		fetch('/assets/digitalsurgeons.mp3')
+		fetch('/assets/digitalsurgeons.mp4')
 
 		// fetch as array buffer
 		.then(response => {
@@ -143,19 +156,25 @@
 		.then(decodedAudio => {
 			ui.start.addEventListener('click', e => {
 				if (config.playing) {
+					// stop and disconnect buffer
 					bufferSource.stop(0);
 					bufferSource.disconnect();
+
+					// update button
 					ui.start.innerHTML = 'Start';
 					config.playing = false;
 				} else {
-					// create new buffer and connect to analyser
-					// connect analyser to output and start buffer
+					// create new buffer and connect to filter
 					bufferSource = audioCtx.createBufferSource();
 					bufferSource.buffer = decodedAudio;
 					bufferSource.loop = true;
 					bufferSource.start(0);
-					bufferSource.connect(gain);
+					bufferSource.connect(biquadFilter);
+
+					// kick off analysis
 					requestAnimationFrame(analyze);
+
+					// update button
 					ui.start.innerHTML = 'Stop';
 					config.playing = true;
 				}
@@ -165,6 +184,11 @@
 					config.playing = false;
 				});
 			});
+		});
+
+		// update biquad filter cutoff frequency with range slider
+		ui.filter.addEventListener('input', e => {
+			biquadFilter.frequency.value = e.currentTarget.value;
 		});
 
 		// call analyze function at 60fps
@@ -177,7 +201,7 @@
 
 			// loop through middle 16 chunks
 			dataSplice.forEach((bin, index) => {
-				let type = 4;
+				let type = false;
 
 				// set shape type based on frequency and amplitude
 				if (index <= 4 && bin > 200) {
@@ -186,8 +210,12 @@
 					type = 2;
 				} else if (index <= 12 && bin > 160) {
 					type = 3;
-				} else if (index <= 16 && bin > 120) {
+				} else if (index <= 16 && bin > 60) {
 					type = 4;
+				}
+
+				if (!type) {
+					return;
 				}
 
 				// add new shape to canvas
