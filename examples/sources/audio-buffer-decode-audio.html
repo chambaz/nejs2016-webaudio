@@ -73,6 +73,7 @@
 				ui.stop.addEventListener('click', e => {
 					e.preventDefault();
 					bufferSource.stop(0);
+					bufferSource.disconnect();
 					bufferSource = false;
 				});
 			});

@@ -32,6 +32,23 @@
 			width: 100%;
 			height: 100%;
 			overflow: hidden;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			flex-direction: column;
+		}
+
+		.range {
+			font-size: 30px;
+			position: relative;
+			z-index: 9999;
+		}
+
+		.btn {
+			font-size: 24px;
+			margin: 20px 0 40px;
+			position: relative;
+			z-index: 9999;
 		}
 
 		.shape {
@@ -75,6 +92,8 @@
 	</head>
 	<body>
 
+		<input data-gain class="range" type="range" />
+		<button data-start class="btn">Start</button>
 
 		<script>
 		// create web audio context
@@ -87,6 +106,11 @@
 			playing: false,
 		};
 
+		const ui = {
+			start: document.querySelector('[data-start]'),
+			gain: document.querySelector('[data-gain]'),
+		};
+
 		// create analyzer node
 		const analyser = audioCtx.createAnalyser();
 		// set size of fast fourier transform
@@ -95,6 +119,13 @@
 		// construct Uint8Array for analysis data
 		const bufferLength = analyser.frequencyBinCount;
 		const dataArray = new Uint8Array(bufferLength);
+
+		// create gain node
+		const gain = audioCtx.createGain();
+		gain.gain.value = .8;
+
+		gain.connect(analyser);
+		analyser.connect(audioCtx.destination);
 
 		let bufferSource;
 
@@ -110,22 +141,27 @@
 			return audioCtx.decodeAudioData(arrayBuffer);
 		})
 		.then(decodedAudio => {
-			// create new buffer and connect to analyser
-			// connect analyser to output and start buffer
-			bufferSource = audioCtx.createBufferSource();
-			bufferSource.buffer = decodedAudio;
-			bufferSource.connect(analyser);
-			analyser.connect(audioCtx.destination);
-			bufferSource.start(0);
+			ui.start.addEventListener('click', e => {
+				if (config.playing) {
+					bufferSource.stop(0);
+					bufferSource.disconnect();
+					config.playing = false;
+				} else {
+					// create new buffer and connect to analyser
+					// connect analyser to output and start buffer
+					bufferSource = audioCtx.createBufferSource();
+					bufferSource.buffer = decodedAudio;
+					bufferSource.start(0);
+					bufferSource.connect(gain);
+					requestAnimationFrame(analyze);
+					config.playing = true;
+				}
 
-			// set playing to true and reset on ended event
-			config.playing = true;
-			bufferSource.addEventListener('ended', e => {
-				config.playing = false;
-			})
-
-			// kick off analysis
-			requestAnimationFrame(analyze);
+				// set playing to true and reset on ended event
+				bufferSource.addEventListener('ended', e => {
+					config.playing = false;
+				});
+			});
 		});
 
 		// call analyze function at 60fps
